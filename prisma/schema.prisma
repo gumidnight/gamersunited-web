@@ -15,33 +15,26 @@ model User {
   discordId     String?   @unique
   role          Role      @default(USER)
   accounts      Account[]
-  sessions      Session[]
   comments      Comment[]
+  orders        Order[]
   reviews       Review[]
+  sessions      Session[]
 }
 
-enum Role {
-  USER
-  MEMBER
-  ADMIN
-}
-
-// NextAuth specific models
 model Account {
   id                String  @id @default(cuid())
   userId            String
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
+  refresh_token     String?
+  access_token      String?
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String? @db.Text
+  id_token          String?
   session_state     String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
@@ -62,61 +55,89 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-// News System
 model NewsPost {
-  id          String   @id @default(cuid())
-  title       String
-  slug        String   @unique
-  content     String   @db.Text
-  coverImage  String?
-  published   Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  authorId    String
-  comments    Comment[]
+  id         String    @id @default(cuid())
+  title      String
+  slug       String    @unique
+  content    String
+  coverImage String?
+  published  Boolean   @default(false)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  authorId   String
+  comments   Comment[]
 }
 
 model Comment {
   id        String   @id @default(cuid())
-  content   String   @db.Text
+  content   String
   createdAt DateTime @default(now())
   userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   postId    String
   post      NewsPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-// E-Shop System
 model Product {
-  id          String   @id @default(cuid())
-  printifyId  String   @unique
+  id          String    @id @default(cuid())
   title       String
-  description String   @db.Text
+  description String
   price       Float
-  stock       Int      @default(0)
+  stock       Int       @default(0)
   sku         String?
   image       String?
-  variants    Variant[]
+  providerId  String    @unique
   reviews     Review[]
+  variants    Variant[]
 }
 
 model Variant {
-  id          String  @id @default(cuid())
-  productId   String
-  product     Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-  printifyId  String
-  title       String
-  price       Float
-  stock       Int     @default(0)
+  id         String  @id @default(cuid())
+  productId  String
+  title      String
+  price      Float
+  stock      Int     @default(0)
+  providerId String
+  product    Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
 
 model Review {
   id        String   @id @default(cuid())
   rating    Int
-  content   String   @db.Text
+  content   String
   createdAt DateTime @default(now())
   userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   productId String
   product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Order {
+  id          String      @id @default(cuid())
+  userId      String
+  status      String      @default("PENDING")
+  totalAmount Float
+  currency    String      @default("EUR")
+  externalId  String?     @unique
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items       OrderItem[]
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String
+  productId String
+  title     String
+  quantity  Int
+  price     Float
+  variantId String?
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+}
+
+enum Role {
+  USER
+  MEMBER
+  ADMIN
 }

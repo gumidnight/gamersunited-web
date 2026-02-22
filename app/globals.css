@@ -1,44 +1,160 @@
 @import "tailwindcss";
 
 @theme {
-  --color-neon-blue: #00f0ff;
-  --color-neon-pink: #ff003c;
-  --color-neon-purple: #b026ff;
-  
+  /* ── Brand Colors ── */
+  --color-neon-purple: #7B2FF7;
+  --color-neon-purple-light: #9B5FFA;
+  --color-neon-purple-dark: #5A1FBF;
+
+  --color-neon-cyan: #00C6FF;
+  --color-neon-cyan-light: #33D4FF;
+  --color-neon-cyan-dark: #009ACC;
+
+  --color-neon-pink: #FF003C;
+  --color-neon-green: #00FF9D;
+
+  /* ── Surface Colors ── */
+  --color-surface-base: #0B0B0F;
+  --color-surface-raised: #101218;
+  --color-surface-overlay: #161822;
+  --color-surface-border: #1E2030;
+  --color-surface-border-hover: #2A2D42;
+
+  /* ── Text Colors ── */
+  --color-text-primary: #EDEDED;
+  --color-text-secondary: #9CA3AF;
+  --color-text-muted: #6B7280;
+
+  /* ── Fonts ── */
   --font-sans: "Inter", "Outfit", sans-serif;
+  --font-heading: "Outfit", "Inter", sans-serif;
 
-  --color-background-start: #0a0a0c;
-  --color-background-end: #0f1016;
-
-  --color-foreground: #ededed;
+  /* ── Shadows ── */
+  --shadow-neon-purple: 0 0 20px rgba(123, 47, 247, 0.5);
+  --shadow-neon-cyan: 0 0 20px rgba(0, 198, 255, 0.5);
+  --shadow-neon-purple-lg: 0 0 40px rgba(123, 47, 247, 0.4), 0 0 80px rgba(123, 47, 247, 0.2);
+  --shadow-neon-cyan-lg: 0 0 40px rgba(0, 198, 255, 0.4), 0 0 80px rgba(0, 198, 255, 0.2);
+  --shadow-glow-card: 0 0 15px rgba(123, 47, 247, 0.15), 0 4px 30px rgba(0, 0, 0, 0.5);
 }
 
 @layer base {
   :root {
-    --background: #0a0a0c;
-    --foreground: #ededed;
+    --background: #0B0B0F;
+    --foreground: #EDEDED;
   }
 
-  /* Focus ring utility variables for Tailwind 4 */
-}
-
-@layer base {
   body {
     background-color: var(--background);
     color: var(--foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-image: radial-gradient(circle at top center, var(--color-background-start), var(--color-background-end) 100%);
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(123, 47, 247, 0.08), transparent),
+      radial-gradient(ellipse 60% 40% at 80% 50%, rgba(0, 198, 255, 0.04), transparent),
+      linear-gradient(to bottom, #0B0B0F, #0D0D13);
     min-height: 100vh;
   }
 }
 
 @layer utilities {
-  .text-shadow-neon {
-    text-shadow: 0 0 10px rgba(0, 240, 255, 0.7), 0 0 20px rgba(0, 240, 255, 0.5);
+  /* ── Neon Text Shadows ── */
+  .text-shadow-neon-cyan {
+    text-shadow: 0 0 10px rgba(0, 198, 255, 0.7), 0 0 20px rgba(0, 198, 255, 0.4);
   }
-  .box-shadow-neon {
-    box-shadow: 0 0 15px rgba(176, 38, 255, 0.5);
+
+  .text-shadow-neon-purple {
+    text-shadow: 0 0 10px rgba(123, 47, 247, 0.7), 0 0 20px rgba(123, 47, 247, 0.4);
+  }
+
+  .text-shadow-neon {
+    text-shadow: 0 0 10px rgba(0, 198, 255, 0.7), 0 0 20px rgba(0, 198, 255, 0.4);
+  }
+
+  /* ── Neon Box Shadows ── */
+  .shadow-neon-purple {
+    box-shadow: var(--shadow-neon-purple);
+  }
+
+  .shadow-neon-cyan {
+    box-shadow: var(--shadow-neon-cyan);
+  }
+
+  .shadow-neon-purple-lg {
+    box-shadow: var(--shadow-neon-purple-lg);
+  }
+
+  .shadow-neon-cyan-lg {
+    box-shadow: var(--shadow-neon-cyan-lg);
+  }
+
+  .shadow-glow-card {
+    box-shadow: var(--shadow-glow-card);
+  }
+
+  /* ── Gradient Text ── */
+  .text-gradient-brand {
+    background: linear-gradient(135deg, var(--color-neon-purple), var(--color-neon-cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* ── Glassmorphism ── */
+  .glass {
+    background: rgba(16, 18, 24, 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .glass-strong {
+    background: rgba(16, 18, 24, 0.8);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  /* ── Gradient Backgrounds ── */
+  .bg-gradient-brand {
+    background: linear-gradient(135deg, var(--color-neon-purple), var(--color-neon-cyan));
+  }
+
+  .bg-gradient-brand-subtle {
+    background: linear-gradient(135deg, rgba(123, 47, 247, 0.1), rgba(0, 198, 255, 0.1));
+  }
+
+  /* ── Glow Hover ── */
+  .hover-glow-purple {
+    transition: box-shadow 0.3s ease;
+  }
+  .hover-glow-purple:hover {
+    box-shadow: 0 0 25px rgba(123, 47, 247, 0.4);
+  }
+
+  .hover-glow-cyan {
+    transition: box-shadow 0.3s ease;
+  }
+  .hover-glow-cyan:hover {
+    box-shadow: 0 0 25px rgba(0, 198, 255, 0.4);
+  }
+
+  /* ── Animations ── */
+  @keyframes pulse-glow {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 0.8; }
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 4s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
   }
 }

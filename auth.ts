@@ -8,17 +8,22 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     adapter: PrismaAdapter(prisma),
     providers: [
         DiscordProvider({
-            clientId: process.env.DISCORD_CLIENT_ID || "",
-            clientSecret: process.env.DISCORD_CLIENT_SECRET || "",
-            authorization: "https://discord.com/api/oauth2/authorize?scope=identify+email",
+            clientId: process.env.DISCORD_CLIENT_ID,
+            clientSecret: process.env.DISCORD_CLIENT_SECRET,
         }),
     ],
     callbacks: {
-        async session({ session, user }: any) {
+        async jwt({ token, user }: any) {
+            if (user) {
+                token.id = user.id;
+                token.role = user.role;
+            }
+            return token;
+        },
+        async session({ session, token }: any) {
             if (session.user) {
-                session.user.id = user.id;
-                // Optionally attach discord avatar/username if needed directly, 
-                // but NextAuth pulls the image/name by default.
+                session.user.id = token.id || token.sub;
+                (session.user as any).role = token.role || "USER";
             }
             return session;
         },

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
-import { createPrintifyOrder } from "@/services/printify";
+import { createPrintfulOrder } from "@/services/printful";
 import { prisma } from "@/lib/prisma"; // If you need to store metadata
 
 export const dynamic = "force-dynamic";
@@ -35,11 +35,13 @@ export async function POST(req: NextRequest) {
             expand: ["line_items", "customer_details"],
         });
 
-        const items = fullSession.line_items?.data.map((item) => ({
-            product_id: item.price?.product, // Should map to Printify product ID/variant
-            variant_id: item.price?.metadata?.printify_variant_id, // Recommended to store Printify IDs in Stripe Price Metadata
-            quantity: item.quantity,
-        }));
+        const items = fullSession.line_items?.data.map((item) => {
+            const variantId = item.price?.metadata?.printful_variant_id || fullSession.metadata?.printfulVariantId;
+            return {
+                variant_id: variantId,
+                quantity: item.quantity,
+            };
+        });
 
         const shipping = (fullSession as any).shipping_details?.address;
         const nameSplit = (fullSession as any).shipping_details?.name?.split(" ") || ["", ""];
@@ -47,8 +49,8 @@ export async function POST(req: NextRequest) {
         const lastName = nameSplit.slice(1).join(" ");
 
         try {
-            // Create Printify order mapped payload
-            const printifyOrderData = {
+            // Create Printful order mapped payload
+            const printfulOrderData = {
                 external_id: session.id,
                 items,
                 customer: {
@@ -68,18 +70,18 @@ export async function POST(req: NextRequest) {
                 },
             };
 
-            // Push order to Printify
-            await createPrintifyOrder(printifyOrderData);
+            // Push order to Printful
+            await createPrintfulOrder(printfulOrderData);
 
             // (Optional) Store order locally for reference
             // await prisma.order.create({ ... })
 
             // Note: Send confirmation email here using Resend or similar service.
 
-            return NextResponse.json({ success: true, message: "Order processed and sent to Printify" }, { status: 200 });
+            return NextResponse.json({ success: true, message: "Order processed and sent to Printful" }, { status: 200 });
 
         } catch (e: any) {
-            console.error("Printify Fulfillment Error:", e);
+            console.error("Printful Fulfillment Error:", e);
             // Depending on your strategy, you might want to return 500 to tell Stripe to retry
             // Or 200 and handle the dead-letter queue via DB log.
             // Re-throwing causes Stripe to retry the webhook delivery.

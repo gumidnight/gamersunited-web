@@ -1,0 +1,218 @@
+{
+  "meta": {
+    "siteName": "Gamers United Cyprus",
+    "siteUrl": "https://gamersunited.cy",
+    "description": "The premier esports community and organizer in Cyprus. Join tournaments, read news, and connect with other gamers.",
+    "ogImage": "/og-image.jpg"
+  },
+  "hero": {
+    "title": "Gamers United",
+    "subtitle": "Cyprus Biggest Community",
+    "description": "The house of gaming in Cyprus. Join the fastest growing gaming community, catch the latest news, and grab exclusive merch.",
+    "ctaPrimary": {
+      "label": "Join the Gamers",
+      "href": "https://discord.gg/NmUJTbqJdZ"
+    },
+    "ctaSecondary": {
+      "label": "Read Latest News",
+      "href": "/news"
+    }
+  },
+  "features": [
+    {
+      "icon": "Gamepad2",
+      "title": "Tournaments",
+      "description": "Compete in structured leagues and single-day events.",
+      "href": "/tournaments",
+      "accent": "neonCyan"
+    },
+    {
+      "icon": "Users",
+      "title": "Community",
+      "description": "Connect with teams, groups, and find local gamers.",
+      "href": "/community",
+      "accent": "neonPurple"
+    },
+    {
+      "icon": "Newspaper",
+      "title": "Daily News",
+      "description": "Don't miss the ultimate esports, tech & gaming updates.",
+      "href": "/news",
+      "accent": "neonPink"
+    },
+    {
+      "icon": "ShoppingCart",
+      "title": "Official Merch",
+      "description": "Rep your club. Buy high quality gaming apparel.",
+      "href": "/shop",
+      "accent": "neonGreen"
+    }
+  ],
+  "about": {
+    "title": "About Us",
+    "description": "Gamers United Cyprus is the island's premier esports community, bringing players together through tournaments, events, and a shared passion for competitive gaming.",
+    "mission": "We exist to cultivate a strong, inclusive gaming community in Cyprus. Whether you're a casual player or a competitive esports athlete, Gamers United provides the platform, the events, and the network to level up your experience. We organize tournaments across multiple titles, host community events, and provide a central hub for gaming culture on the island.",
+    "stats": [
+      {
+        "label": "Active Members",
+        "value": "2,500+",
+        "icon": "Users"
+      },
+      {
+        "label": "Tournaments Held",
+        "value": "20+",
+        "icon": "Trophy"
+      },
+      {
+        "label": "Games Covered",
+        "value": "30+",
+        "icon": "Target"
+      },
+      {
+        "label": "Years Active",
+        "value": "5+",
+        "icon": "Heart"
+      }
+    ],
+    "pillars": [
+      {
+        "title": "Tournaments",
+        "description": "From weekly online cups to major LAN events, we run competitive circuits across the most popular esports titles.",
+        "accent": "neonCyan"
+      },
+      {
+        "title": "Community Events",
+        "description": "Game nights, watch parties, meetups, and more. We bring the community together both online and offline.",
+        "accent": "neonPurple"
+      },
+      {
+        "title": "Content & News",
+        "description": "Stay updated with the latest esports news, tournament results, and gaming content from Cyprus and beyond.",
+        "accent": "neonPink"
+      }
+    ]
+  },
+  "community": {
+    "title": "Our Community",
+    "description": "Join thousands of gamers across Cyprus. Find your squad, compete in tournaments, and be part of something bigger.",
+    "discord": {
+      "title": "Join Our Discord",
+      "description": "Our Discord server is the heart of the community. Chat with fellow gamers, find teammates, get tournament updates, and hang out in voice channels.",
+      "href": "https://discord.gg/gamersunited",
+      "buttonLabel": "Join Discord Server"
+    },
+    "features": [
+      {
+        "icon": "Users",
+        "title": "Find Your Team",
+        "description": "Looking for teammates? Use our LFG channels to connect with players at your skill level.",
+        "accent": "neonCyan"
+      },
+      {
+        "icon": "Trophy",
+        "title": "Compete & Win",
+        "description": "Participate in weekly tournaments and seasonal leagues with prizes and recognition.",
+        "accent": "neonPurple"
+      },
+      {
+        "icon": "Gamepad2",
+        "title": "Game Nights",
+        "description": "Join casual game nights every week. No pressure, just fun with the community.",
+        "accent": "neonPink"
+      }
+    ]
+  },
+  "contact": {
+    "title": "Get In Touch",
+    "description": "Have a question, partnership proposal, or just want to say hi? We'd love to hear from you.",
+    "email": "info@gamersunited.cy",
+    "location": "Nicosia, Cyprus",
+    "discordNote": "The fastest way to reach us is through our Discord server.",
+    "discordHref": "https://discord.gg/gamersunited",
+    "partnerships": "Interested in partnering with Gamers United? We're always open to collaborations with brands, organizations, and event organizers. Reach out via email for business inquiries."
+  },
+  "news": {
+    "title": "Latest News",
+    "description": "Stay updated with the latest from Gamers United Cyprus — tournaments, events, and community updates."
+  },
+  "shop": {
+    "title": "E-Shop",
+    "description": "Official Gamers United merchandise. Rep your community with premium gaming apparel and accessories."
+  },
+  "footer": {
+    "tagline": "The premier esports and gaming community in Cyprus. Uniting players of all levels.",
+    "copyright": "Gamers United. All rights reserved.",
+    "sections": {
+      "explore": [
+        {
+          "label": "Latest News",
+          "href": "/news"
+        },
+        {
+          "label": "Community",
+          "href": "/community"
+        },
+        {
+          "label": "E-Shop",
+          "href": "/shop"
+        },
+        {
+          "label": "About Us",
+          "href": "/about"
+        }
+      ],
+      "support": [
+        {
+          "label": "Contact Us",
+          "href": "/contact"
+        },
+        {
+          "label": "FAQ",
+          "href": "/faq"
+        },
+        {
+          "label": "Discord Server",
+          "href": "https://discord.gg/gamersunited"
+        }
+      ],
+      "legal": [
+        {
+          "label": "Privacy Policy",
+          "href": "/privacy"
+        },
+        {
+          "label": "Terms of Service",
+          "href": "/terms"
+        }
+      ]
+    }
+  },
+  "social": {
+    "discord": "https://discord.gg/gamersunitedcy",
+    "facebook": "https://www.facebook.com/gamersunitedcy/",
+    "instagram": "https://www.instagram.com/gamersunitedcy/",
+    "twitter": "https://twitter.com/gamersunitedcy/",
+    "twitch": "https://www.twitch.tv/gamersunitedcy",
+    "youtube": "https://www.youtube.com/channel/UC-0oYuID8ksQZYbuG-B9dVA/"
+  },
+  "nav": {
+    "links": [
+      {
+        "label": "Home",
+        "href": "/"
+      },
+      {
+        "label": "News",
+        "href": "/news"
+      },
+      {
+        "label": "E-Shop",
+        "href": "/shop"
+      },
+      {
+        "label": "Contact",
+        "href": "/contact"
+      }
+    ]
+  }
+}
