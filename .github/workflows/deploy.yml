@@ -1,0 +1,67 @@
+name: Deploy to Cloudflare Pages
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Prisma Generate
+        run: npx prisma generate
+
+      - name: Lint Code
+        run: npm run lint
+
+      - name: Typecheck
+        run: npx tsc --noEmit
+
+      - name: Build Project
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SITE_URL: https://gamersunited.cy
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+          STRIPE_WEBHOOK_SECRET: ${{ secrets.STRIPE_WEBHOOK_SECRET }}
+          PRINTIFY_API_KEY: ${{ secrets.PRINTIFY_API_KEY }}
+          PRINTIFY_SHOP_ID: ${{ secrets.PRINTIFY_SHOP_ID }}
+          DISCORD_CLIENT_ID: ${{ secrets.DISCORD_CLIENT_ID }}
+          DISCORD_CLIENT_SECRET: ${{ secrets.DISCORD_CLIENT_SECRET }}
+          AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
+
+      # The `@cloudflare/pages-action` action is the recommended way to deploy static output of Next.js to Cloudflare pages.
+      # Note: For Next.js App Router full SSR, Cloudflare uses `@cloudflare/next-on-pages` usually, 
+      # but standard Next.js standalone on CF Pages requires `npx @cloudflare/next-on-pages`. 
+      # We will deploy using standard actions to CF pages.
+      
+      - name: Build for Cloudflare Pages
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: npx @cloudflare/next-on-pages@1
+
+      - name: Publish to Cloudflare Pages
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: 'gamersunited'
+          directory: '.vercel/output/static'
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
