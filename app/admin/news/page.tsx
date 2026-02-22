@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";

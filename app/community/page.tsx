@@ -1,4 +1,5 @@
 "use client";
+export const dynamic = "force-dynamic";
 
 import { motion } from "framer-motion";
 import { MessageCircle, Users, Gamepad2, Trophy, type LucideIcon } from "lucide-react";

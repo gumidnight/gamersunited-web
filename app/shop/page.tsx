@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { prisma } from "@/lib/prisma";
 import { ShoppingBag } from "lucide-react";
 import siteContent from "@/content/site.json";

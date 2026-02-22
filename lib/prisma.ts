@@ -8,8 +8,7 @@ if (typeof WebSocket === 'undefined' && process.env.NODE_ENV !== 'production') {
 }
 
 const connectionString = process.env.DATABASE_URL || "postgres://user:password@localhost:5432/gamersunited"
-const pool = new Pool({ connectionString })
-const adapter = new PrismaNeon(pool)
+const adapter = new PrismaNeon({ connectionString })
 
 const globalForPrisma = global as unknown as { prisma: PrismaClient }
 

@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { prisma } from "@/lib/prisma";
 import SyncButton from "@/components/SyncButton";
 import { ShoppingBag, Tag, Box, ArrowRight } from "lucide-react";

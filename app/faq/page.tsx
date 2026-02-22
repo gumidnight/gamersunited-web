@@ -1,4 +1,5 @@
 "use client";
+export const dynamic = "force-dynamic";
 
 import { motion } from "framer-motion";
 import { HelpCircle, ChevronDown, MessageSquare, Shield, Trophy, ShoppingBag } from "lucide-react";
