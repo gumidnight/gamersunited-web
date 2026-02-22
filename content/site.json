@@ -98,7 +98,7 @@
     "discord": {
       "title": "Join Our Discord",
       "description": "Our Discord server is the heart of the community. Chat with fellow gamers, find teammates, get tournament updates, and hang out in voice channels.",
-      "href": "https://discord.gg/gamersunited",
+      "href": "https://discord.gg/NmUJTbqJdZ",
       "buttonLabel": "Join Discord Server"
     },
     "features": [
@@ -125,10 +125,10 @@
   "contact": {
     "title": "Get In Touch",
     "description": "Have a question, partnership proposal, or just want to say hi? We'd love to hear from you.",
-    "email": "info@gamersunited.cy",
+    "email": "contact@gamersunited.cy",
     "location": "Nicosia, Cyprus",
     "discordNote": "The fastest way to reach us is through our Discord server.",
-    "discordHref": "https://discord.gg/gamersunited",
+    "discordHref": "https://discord.gg/NmUJTbqJdZ",
     "partnerships": "Interested in partnering with Gamers United? We're always open to collaborations with brands, organizations, and event organizers. Reach out via email for business inquiries."
   },
   "news": {
@@ -172,7 +172,7 @@
         },
         {
           "label": "Discord Server",
-          "href": "https://discord.gg/gamersunited"
+          "href": "https://discord.gg/NmUJTbqJdZ"
         }
       ],
       "legal": [
@@ -188,7 +188,7 @@
     }
   },
   "social": {
-    "discord": "https://discord.gg/gamersunitedcy",
+    "discord": "https://discord.gg/NmUJTbqJdZ",
     "facebook": "https://www.facebook.com/gamersunitedcy/",
     "instagram": "https://www.instagram.com/gamersunitedcy/",
     "twitter": "https://twitter.com/gamersunitedcy/",

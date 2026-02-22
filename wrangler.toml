@@ -1,0 +1,16 @@
+name = "gamersunited-web"
+compatibility_date = "2024-02-23"
+pages_build_output_dir = ".vercel/output/static"
+
+[vars]
+NEXT_PUBLIC_SITE_URL = "https://gamersunited.pages.dev"
+
+# Database and API Secrets need to be configured in the Cloudflare dashboard:
+# DATABASE_URL
+# AUTH_SECRET
+# DISCORD_CLIENT_ID
+# DISCORD_CLIENT_SECRET
+# STRIPE_SECRET_KEY
+# STRIPE_WEBHOOK_SECRET
+# PRINTIFY_API_KEY
+# PRINTIFY_SHOP_ID

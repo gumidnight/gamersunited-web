@@ -18,13 +18,13 @@ const instaPosts = [
 export default function InstagramFeed() {
     return (
         <section className="mb-24">
-            <div className="glass rounded-[2rem] p-8 md:p-12 overflow-hidden border border-surface-border">
+            <div className="glass rounded-[2rem] p-6 md:p-12 overflow-hidden border border-surface-border">
                 {/* Header Style - Dark & Aggressive */}
                 <div className="mb-12 text-left">
                     <div className="flex items-center gap-3 text-neon-pink text-[10px] font-black tracking-[0.4em] uppercase mb-4">
                         <Instagram size={14} /> @gamersunitedcy
                     </div>
-                    <h2 className="text-4xl md:text-5xl font-black text-text-primary mb-4 leading-tight uppercase italic tracking-tighter">
+                    <h2 className="text-3xl md:text-5xl font-black text-text-primary mb-4 leading-tight uppercase italic tracking-tighter">
                         COMMUNITY <span className="text-neon-cyan">JOURNAL</span>
                     </h2>
                     <p className="text-text-secondary text-lg max-w-2xl leading-relaxed">
@@ -35,9 +35,9 @@ export default function InstagramFeed() {
                 {/* The Widget Box - Integrated Dark Theme */}
                 <div className="bg-black/40 border border-surface-border rounded-3xl overflow-hidden shadow-2xl">
                     {/* Profile Header */}
-                    <div className="flex flex-col sm:flex-row items-center justify-between p-8 bg-surface-base/50 border-b border-surface-border gap-8">
-                        <div className="flex items-center gap-6">
-                            <div className="relative w-20 h-20 rounded-full p-1 bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7]">
+                    <div className="flex flex-col sm:flex-row items-center justify-between p-6 sm:p-8 bg-surface-base/50 border-b border-surface-border gap-6 sm:gap-8">
+                        <div className="flex items-center gap-4 sm:gap-6">
+                            <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full p-1 bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7]">
                                 <div className="w-full h-full rounded-full border-4 border-black overflow-hidden bg-black relative">
                                     <Image
                                         src="https://instagram.fnic5-1.fna.fbcdn.net/v/t51.2885-19/503988445_18063246317125792_4085789832816401956_n.jpg?stp=dst-jpg_s320x320_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby4xMDgwLmMyIn0&_nc_ht=instagram.fnic5-1.fna.fbcdn.net&_nc_cat=104&_nc_oc=Q6cZ2QEYKEjQGwuPpDelwOcdeuz1-zGZrypYELdn_p90AK7DtnU5QT2hW-DLDOx_pKssaKU&_nc_ohc=AuIDGsENdycQ7kNvwHsuHy9&_nc_gid=NzQihiBoCdrIN1zo2jeVYg&edm=AOQ1c0wBAAAA&ccb=7-5&oh=00_AfvGJCDspJhFp-uP-YAljPuz2pJUBj6_a3kbPGQ0UgBMQw&oe=69A104D8&_nc_sid=8b3546"
@@ -68,7 +68,7 @@ export default function InstagramFeed() {
                     </div>
 
                     {/* Post Grid */}
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-2 p-2">
+                    <div className="grid grid-cols-3 gap-1 sm:gap-2 p-1 sm:p-2">
                         {instaPosts.map((post) => (
                             <a
                                 key={post.id}

@@ -46,7 +46,7 @@ export default function CommunitySection() {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                    className="bg-gradient-brand-subtle border border-neon-purple/20 rounded-3xl p-10 md:p-16 text-left relative overflow-hidden glass"
+                    className="bg-gradient-brand-subtle border border-neon-purple/20 rounded-3xl p-8 md:p-16 text-left relative overflow-hidden glass"
                 >
                     <div className="relative z-10">
                         <div className="inline-flex items-center gap-2 bg-[#5865F2]/20 text-[#5865F2] px-4 py-2 rounded-full text-xs font-black uppercase tracking-widest mb-6 border border-[#5865F2]/30">
@@ -81,10 +81,10 @@ export default function CommunitySection() {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-                    className="flex justify-center lg:justify-end"
+                    className="flex justify-center lg:justify-end relative"
                 >
                     {/* iPhone Mockup */}
-                    <div className="relative mx-auto w-[320px] h-[650px] bg-[#0d0d0d] rounded-[3rem] border-[8px] border-[#1a1a1a] shadow-2xl overflow-hidden shadow-neon-purple/20">
+                    <div className="relative mx-auto w-full max-w-[320px] aspect-[1/2.03] bg-[#0d0d0d] rounded-[3rem] border-[8px] border-[#1a1a1a] shadow-2xl overflow-hidden shadow-neon-purple/20">
                         {/* Notch / Dynamic Island */}
                         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-28 h-7 bg-[#1a1a1a] rounded-b-2xl z-20 flex items-center justify-center">
                             <div className="w-12 h-1 bg-[#0d0d0d] rounded-full" />

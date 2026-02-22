@@ -42,15 +42,15 @@ export default function AboutSection() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: 0.1 * i, duration: 0.4 }}
-                            className="glass rounded-3xl p-10 text-center hover:border-neon-cyan/40 transition-all hover:-translate-y-2 shadow-2xl"
+                            className="glass rounded-3xl p-6 sm:p-10 text-center hover:border-neon-cyan/40 transition-all hover:-translate-y-2 shadow-2xl"
                         >
-                            <div className="text-neon-cyan flex justify-center mb-6">
-                                <Icon size={32} />
+                            <div className="text-neon-cyan flex justify-center mb-4 sm:mb-6">
+                                <Icon size={28} className="sm:w-8 sm:h-8" />
                             </div>
-                            <div className="text-4xl font-black text-text-primary mb-2 tracking-tighter">
+                            <div className="text-3xl sm:text-4xl font-black text-text-primary mb-2 tracking-tighter">
                                 {stat.value}
                             </div>
-                            <div className="text-text-secondary text-sm font-black uppercase tracking-widest">{stat.label}</div>
+                            <div className="text-text-secondary text-[10px] sm:text-sm font-black uppercase tracking-widest">{stat.label}</div>
                         </motion.div>
                     );
                 })}
@@ -61,12 +61,12 @@ export default function AboutSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5 }}
-                className="glass rounded-3xl p-12 md:p-20 relative overflow-hidden shadow-2xl"
+                className="glass rounded-3xl p-8 md:p-20 relative overflow-hidden shadow-2xl"
             >
                 <div className="absolute top-0 left-0 w-32 h-32 bg-neon-purple/10 blur-[60px] -translate-x-1/2 -translate-y-1/2" />
                 <div className="absolute bottom-0 right-0 w-32 h-32 bg-neon-cyan/10 blur-[60px] translate-x-1/2 translate-y-1/2" />
 
-                <p className="text-text-primary leading-relaxed text-2xl font-medium text-center relative z-10 max-w-4xl mx-auto">
+                <p className="text-text-primary leading-relaxed text-xl sm:text-2xl font-medium text-center relative z-10 max-w-4xl mx-auto">
                     {about.mission}
                 </p>
             </motion.div>

@@ -62,7 +62,7 @@ export default function FeatureCard({
             <div className="absolute inset-0 bg-gradient-to-t from-surface-raised via-transparent to-transparent opacity-60" />
           </div>
 
-          <div className="p-10 flex flex-col flex-1">
+          <div className="p-8 sm:p-10 flex flex-col flex-1">
             <div className="mb-6 bg-surface-base w-16 h-16 rounded-2xl flex items-center justify-center -mt-16 relative z-10 border border-surface-border group-hover:scale-110 transition-transform shadow-2xl">
               <Icon size={32} className={colorClass} />
             </div>

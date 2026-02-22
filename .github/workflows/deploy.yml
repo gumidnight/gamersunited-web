@@ -34,8 +34,9 @@ jobs:
       - name: Typecheck
         run: npx tsc --noEmit
 
-      - name: Build Project
-        run: npm run build
+      - name: Build for Cloudflare Pages
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: npx @cloudflare/next-on-pages@1
         env:
           NEXT_PUBLIC_SITE_URL: https://gamersunited.cy
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
@@ -47,18 +48,9 @@ jobs:
           DISCORD_CLIENT_SECRET: ${{ secrets.DISCORD_CLIENT_SECRET }}
           AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
 
-      # The `@cloudflare/pages-action` action is the recommended way to deploy static output of Next.js to Cloudflare pages.
-      # Note: For Next.js App Router full SSR, Cloudflare uses `@cloudflare/next-on-pages` usually, 
-      # but standard Next.js standalone on CF Pages requires `npx @cloudflare/next-on-pages`. 
-      # We will deploy using standard actions to CF pages.
-      
-      - name: Build for Cloudflare Pages
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: npx @cloudflare/next-on-pages@1
-
       - name: Publish to Cloudflare Pages
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        uses: cloudflare/pages-action@v1
+        uses: cloudflare/pages-action@1
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

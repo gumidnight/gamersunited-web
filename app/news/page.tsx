@@ -11,7 +11,7 @@ export default async function NewsPage() {
     return (
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
             <div className="text-center mb-16">
-                <h1 className="text-5xl md:text-6xl font-black tracking-tight mb-4 uppercase">
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-4 uppercase">
                     LATEST <span className="text-gradient-brand">NEWS</span>
                 </h1>
                 <p className="text-text-secondary text-lg max-w-xl mx-auto">

@@ -5,10 +5,12 @@ import { createPrintfulOrder } from "@/services/printful";
 import { prisma } from "@/lib/prisma"; // If you need to store metadata
 
 export const dynamic = "force-dynamic";
+export const runtime = "edge";
 
 export async function POST(req: NextRequest) {
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "sk_test_placeholder", {
         apiVersion: "2023-10-16" as any,
+        httpClient: Stripe.createFetchHttpClient(),
     });
 
     const payload = await req.text();
@@ -16,7 +18,7 @@ export async function POST(req: NextRequest) {
     let event: Stripe.Event;
 
     try {
-        event = stripe.webhooks.constructEvent(
+        event = await stripe.webhooks.constructEventAsync(
             payload,
             signature,
             process.env.STRIPE_WEBHOOK_SECRET as string
