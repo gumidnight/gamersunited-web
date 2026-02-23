@@ -86,6 +86,7 @@ model Product {
   stock       Int       @default(0)
   sku         String?
   image       String?
+  images      String[]
   providerId  String    @unique
   reviews     Review[]
   variants    Variant[]
@@ -98,6 +99,9 @@ model Variant {
   price      Float
   stock      Int     @default(0)
   providerId String
+  color      String?
+  size       String?
+  image      String?
   product    Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
 
