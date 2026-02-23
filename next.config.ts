@@ -6,38 +6,11 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'cdn.discordapp.com',
-        pathname: '/**',
+        hostname: '**',
       },
       {
-        protocol: 'https',
-        hostname: 'files.cdn.printful.com',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'images.unsplash.com',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'upload.wikimedia.org',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'logos-world.net',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'seeklogo.com',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: '*.fna.fbcdn.net',
-        pathname: '/**',
+        protocol: 'http',
+        hostname: '**',
       },
     ],
     dangerouslyAllowSVG: true,

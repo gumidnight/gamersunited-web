@@ -52,11 +52,10 @@ export default function NewsPostForm({ action, initialData, submitLabel, titleLa
 
                     {coverImageUrl && (
                         <div className="relative aspect-video w-full max-w-md rounded-xl overflow-hidden border border-surface-border">
-                            <Image
+                            <img
                                 src={coverImageUrl}
                                 alt="Preview"
-                                fill
-                                className="object-cover"
+                                className="w-full h-full object-cover"
                                 onError={() => setCoverImageUrl("")}
                             />
                             <button
