@@ -74,9 +74,6 @@ import { stripe } from "./stripe";
 
 export async function createCheckoutSession(variantId: string) {
     const session = await auth();
-    if (!session?.user) {
-        throw new Error("You must be logged in to purchase products.");
-    }
 
     try {
         const headersList = await headers();
@@ -110,9 +107,9 @@ export async function createCheckoutSession(variantId: string) {
             mode: "payment",
             success_url: `${origin}/shop/success?session_id={CHECKOUT_SESSION_ID}`,
             cancel_url: `${origin}/shop/${variant.productId}`,
-            customer_email: session.user.email || undefined,
+            customer_email: session?.user?.email || undefined,
             metadata: {
-                userId: session.user.id || "",
+                userId: session?.user?.id || "guest",
                 printfulVariantId: variant.providerId,
                 productId: variant.productId,
             },
