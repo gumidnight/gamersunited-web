@@ -6,40 +6,45 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
+    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "upload": "opennextjs-cloudflare build && opennextjs-cloudflare upload",
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.1",
+    "@neondatabase/serverless": "^0.9.0",
+    "@opennextjs/cloudflare": "^1.16.5",
     "@prisma/adapter-neon": "^7.4.1",
     "@prisma/client": "^7.4.1",
     "clsx": "^2.1.1",
+    "esbuild": "^0.27.3",
     "framer-motion": "^12.34.3",
     "lucide-react": "^0.575.0",
     "next": "16.1.6",
     "next-auth": "^5.0.0-beta.30",
-    "@neondatabase/serverless": "^0.9.0",
-    "ws": "^8.18.0",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-google-recaptcha": "^3.1.0",
     "stripe": "^20.3.1",
     "tailwind-merge": "^3.5.0",
+    "ws": "^8.18.0",
     "zod": "^4.3.6"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
-    "@cloudflare/next-on-pages": "^1.11.0",
-    "wrangler": "^3.50.0",
-    "@types/ws": "^8.5.10",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/react-google-recaptcha": "^2.1.9",
+    "@types/ws": "^8.5.10",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
     "prisma": "^7.4.1",
     "tailwindcss": "^4",
     "ts-node": "^10.9.2",
-    "typescript": "^5"
+    "typescript": "^5",
+    "wrangler": "^4.67.0"
   }
 }

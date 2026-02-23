@@ -1,5 +1,4 @@
 "use client";
-export const dynamic = "force-dynamic";
 
 import { motion } from "framer-motion";
 import { Users, Target, Trophy, Heart, type LucideIcon } from "lucide-react";
@@ -88,10 +87,10 @@ export default function AboutPage() {
                     >
                         <div
                             className={`w-3 h-3 rounded-full mb-4 ${item.accent === "neonCyan"
-                                    ? "bg-neon-cyan"
-                                    : item.accent === "neonPurple"
-                                        ? "bg-neon-purple"
-                                        : "bg-neon-pink"
+                                ? "bg-neon-cyan"
+                                : item.accent === "neonPurple"
+                                    ? "bg-neon-purple"
+                                    : "bg-neon-pink"
                                 }`}
                         />
                         <h3 className="text-xl font-bold mb-3 text-text-primary">

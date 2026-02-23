@@ -1,13 +1,23 @@
 import { PrismaClient } from '@prisma/client'
-import { Pool, neonConfig } from '@neondatabase/serverless'
+import { neonConfig } from '@neondatabase/serverless'
 import { PrismaNeon } from '@prisma/adapter-neon'
 
-// Conditionally require `ws` only if window/WebSocket isn't available natively (e.g. in Node.js dev server vs Edge runtime)
-if (typeof WebSocket === 'undefined' && process.env.NODE_ENV !== 'production') {
-    neonConfig.webSocketConstructor = require('ws')
+// Optimization for Cloudflare Workers: use Fetch instead of WebSockets where possible
+const connectionString = process.env.DATABASE_URL!
+const isLocal = connectionString.includes('localhost') || connectionString.includes('127.0.0.1')
+
+if (isLocal) {
+    if (typeof WebSocket === 'undefined') {
+        try {
+            neonConfig.webSocketConstructor = require('ws')
+        } catch { /* ws not available */ }
+    }
+    neonConfig.useSecureWebSocket = false
+} else {
+    // In production (Cloudflare), standard Fetch is faster and more reliable
+    neonConfig.poolQueryViaFetch = true
 }
 
-const connectionString = process.env.DATABASE_URL || "postgres://user:password@localhost:5432/gamersunited"
 const adapter = new PrismaNeon({ connectionString })
 
 const globalForPrisma = global as unknown as { prisma: PrismaClient }
@@ -16,7 +26,7 @@ export const prisma =
     globalForPrisma.prisma ||
     new PrismaClient({
         adapter,
-        log: ['query'],
+        log: process.env.NODE_ENV === 'development' ? ['query'] : [],
     })
 
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma

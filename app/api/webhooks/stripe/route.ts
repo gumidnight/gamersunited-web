@@ -5,7 +5,6 @@ import { createPrintfulOrder } from "@/services/printful";
 import { prisma } from "@/lib/prisma"; // If you need to store metadata
 
 export const dynamic = "force-dynamic";
-export const runtime = "edge";
 
 export async function POST(req: NextRequest) {
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "sk_test_placeholder", {

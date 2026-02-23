@@ -1,0 +1,40 @@
+{
+    "$schema": "node_modules/wrangler/config-schema.json",
+    "main": ".open-next/worker.js",
+    "name": "gamersunited-web",
+    "workers_dev": true,
+    "compatibility_date": "2024-12-30",
+    "compatibility_flags": [
+        "nodejs_compat",
+        "global_fetch_strictly_public"
+    ],
+    "assets": {
+        "directory": ".open-next/assets",
+        "binding": "ASSETS"
+    },
+    "services": [
+        {
+            "binding": "WORKER_SELF_REFERENCE",
+            "service": "gamersunited-web"
+        }
+    ],
+    "images": {
+        "binding": "IMAGES"
+    },
+    "vars": {
+        "NEXT_PUBLIC_SITE_URL": "https://gamersunited.cy",
+        "AUTH_URL": "https://gamersunited.cy",
+        "AUTH_TRUST_HOST": "true",
+        "NEXT_PUBLIC_RECAPTCHA_SITE_KEY": "6LeuWHQsAAAAAID4wBWv27tvUP35q1-H4fFuWjkC"
+    },
+    "routes": [
+        {
+            "pattern": "gamersunited.cy",
+            "custom_domain": true
+        },
+        {
+            "pattern": "www.gamersunited.cy",
+            "custom_domain": true
+        }
+    ]
+}

