@@ -45,21 +45,28 @@ export default function ProductPurchaseSection({ variants }: { variants: Variant
                         Select Option
                     </label>
                     <div className="flex flex-wrap gap-3">
-                        {variants.map((v) => (
-                            <button
-                                key={v.id}
-                                onClick={() => setSelectedVariantId(v.id)}
-                                className={`
-                                    px-6 py-3 rounded-xl font-bold transition-all border
-                                    ${selectedVariantId === v.id
-                                        ? "bg-neon-cyan/20 border-neon-cyan text-neon-cyan shadow-[0_0_15px_rgba(34,211,238,0.2)]"
-                                        : "bg-surface-base border-surface-border text-text-secondary hover:border-text-muted"
-                                    }
-                                `}
-                            >
-                                {v.title}
-                            </button>
-                        ))}
+                        {variants.map((v) => {
+                            // Extract size from title (e.g., "Hoodie - S", "Black / XL", "S")
+                            const sizeParts = v.title.split(/[\-\/]/).map(s => s.trim());
+                            const possibleSize = sizeParts[sizeParts.length - 1]; // usually the last part is the size
+                            const displaySize = `/${possibleSize.toUpperCase()}`;
+
+                            return (
+                                <button
+                                    key={v.id}
+                                    onClick={() => setSelectedVariantId(v.id)}
+                                    className={`
+                                        px-6 py-3 rounded-xl font-bold transition-all border
+                                        ${selectedVariantId === v.id
+                                            ? "bg-neon-cyan/20 border-neon-cyan text-neon-cyan shadow-[0_0_15px_rgba(34,211,238,0.2)]"
+                                            : "bg-surface-base border-surface-border text-text-secondary hover:border-text-muted"
+                                        }
+                                    `}
+                                >
+                                    {displaySize}
+                                </button>
+                            );
+                        })}
                     </div>
                 </div>
             )}

@@ -1,6 +1,6 @@
-# Gamers United Cyprus Website
+# Gamers United Website
 
-Production-ready Next.js App Router project for Gamers United Cyprus, built with React, TypeScript, TailwindCSS, NextAuth, Stripe, Printify, and Prisma.
+Production-ready Next.js App Router project for Gamers United, built with React, TypeScript, TailwindCSS, NextAuth, Stripe, Printify, and Prisma.
 
 ## Stack & Architecture
 

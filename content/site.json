@@ -1,6 +1,6 @@
 {
   "meta": {
-    "siteName": "Gamers United Cyprus",
+    "siteName": "Gamers United",
     "siteUrl": "https://gamersunited.cy",
     "description": "The premier esports community and organizer in Cyprus. Join tournaments, read news, and connect with other gamers.",
     "ogImage": "/og-image.jpg"
@@ -50,7 +50,7 @@
   ],
   "about": {
     "title": "About Us",
-    "description": "Gamers United Cyprus is the island's premier esports community, bringing players together through tournaments, events, and a shared passion for competitive gaming.",
+    "description": "Gamers United is the island's premier esports community, bringing players together through tournaments, events, and a shared passion for competitive gaming.",
     "mission": "We exist to cultivate a strong, inclusive gaming community in Cyprus. Whether you're a casual player or a competitive esports athlete, Gamers United provides the platform, the events, and the network to level up your experience. We organize tournaments across multiple titles, host community events, and provide a central hub for gaming culture on the island.",
     "stats": [
       {
@@ -133,7 +133,7 @@
   },
   "news": {
     "title": "Latest News",
-    "description": "Stay updated with the latest from Gamers United Cyprus — tournaments, events, and community updates."
+    "description": "Stay updated with the latest from Gamers United — tournaments, events, and community updates."
   },
   "shop": {
     "title": "E-Shop",

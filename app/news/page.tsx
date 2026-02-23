@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic";
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
+import Image from "next/image";
 import { Calendar, ArrowRight } from "lucide-react";
 
 export default async function NewsPage() {
@@ -16,7 +17,7 @@ export default async function NewsPage() {
                     LATEST <span className="text-gradient-brand">NEWS</span>
                 </h1>
                 <p className="text-text-secondary text-lg max-w-xl mx-auto">
-                    Stay updated with the latest events, tournaments, and community news from Gamers United Cyprus.
+                    Stay updated with the latest events, tournaments, and community news from Gamers United.
                 </p>
             </div>
 
@@ -31,7 +32,16 @@ export default async function NewsPage() {
                             <Link href={`/news/${post.slug}`} className="block h-full">
                                 <div className="glass rounded-3xl overflow-hidden hover:border-surface-border-hover transition-all hover:-translate-y-2 group h-full shadow-2xl">
                                     <div className="aspect-[16/9] w-full bg-gradient-to-br from-surface-overlay to-surface-base flex items-center justify-center relative overflow-hidden">
-                                        <span className="text-text-muted text-7xl font-black opacity-10 group-hover:scale-125 transition-transform duration-700">GU</span>
+                                        {post.coverImage ? (
+                                            <Image
+                                                src={post.coverImage}
+                                                alt={post.title}
+                                                fill
+                                                className="object-cover group-hover:scale-105 transition-transform duration-700"
+                                            />
+                                        ) : (
+                                            <span className="text-text-muted text-7xl font-black opacity-10 group-hover:scale-125 transition-transform duration-700">GU</span>
+                                        )}
                                         <div className="absolute inset-0 bg-gradient-to-t from-surface-base via-transparent to-transparent opacity-60" />
                                     </div>
                                     <div className="p-8">

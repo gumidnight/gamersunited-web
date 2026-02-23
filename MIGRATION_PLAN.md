@@ -1,6 +1,6 @@
 # OpenNext Cloudflare Migration Plan — Free Tier Optimized
 
-**Project:** Gamers United Cyprus  
+**Project:** Gamers United  
 **Date:** 2026-02-22  
 **Current Stack:** Next.js 16.1.6 + `@cloudflare/next-on-pages` + Edge Runtime  
 **Target Stack:** Next.js 16.1.6 + `@opennextjs/cloudflare` + Node.js Runtime  
@@ -497,7 +497,7 @@ import Stripe from 'stripe';
 export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
     apiVersion: '2023-10-16' as any,
     appInfo: {
-        name: 'Gamers United Cyprus',
+        name: 'Gamers United',
         version: '0.1.0',
     },
     httpClient: Stripe.createFetchHttpClient(),

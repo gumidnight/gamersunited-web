@@ -30,7 +30,8 @@ export default async function EditNewsPostPage({ params }: { params: Promise<{ i
                 titleLabel={`Edit Post: ${post.title}`}
                 initialData={{
                     title: post.title,
-                    content: post.content
+                    content: post.content,
+                    coverImage: post.coverImage
                 }}
             />
         </div>

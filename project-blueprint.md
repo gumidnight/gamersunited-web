@@ -1,7 +1,7 @@
-# Gamers United Cyprus - Official Web Platform
+# Gamers United - Official Web Platform
 
 ## 🎮 Project Overview
-The Gamers United Cyprus web platform is a high-performance, esports-centric hub designed to unite the Cypriot gaming community. Built with a "Mobile-First" philosophy and a cutting-edge **Dark Esports Aesthetic**, the platform serves as the definitive source for news, tournaments, and official merchandise.
+The Gamers United web platform is a high-performance, esports-centric hub designed to unite the Cypriot gaming community. Built with a "Mobile-First" philosophy and a cutting-edge **Dark Esports Aesthetic**, the platform serves as the definitive source for news, tournaments, and official merchandise.
 
 ---
 

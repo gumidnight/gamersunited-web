@@ -5,9 +5,12 @@ import { notFound } from "next/navigation";
 import { ShoppingBag, ArrowLeft, ShieldCheck, Truck, RotateCcw } from "lucide-react";
 import Link from "next/link";
 import ProductPurchaseSection from "@/components/ProductPurchaseSection";
+import ProductReviewSection from "@/components/ProductReviewSection";
+import { auth } from "@/auth";
 
 export default async function ProductPage({ params }: { params: { id: string } }) {
     const { id } = await params;
+    const session = await auth();
 
     const product = await prisma.product.findUnique({
         where: { id },
@@ -15,6 +18,14 @@ export default async function ProductPage({ params }: { params: { id: string } }
             variants: {
                 orderBy: {
                     price: 'asc'
+                }
+            },
+            reviews: {
+                include: {
+                    user: true
+                },
+                orderBy: {
+                    createdAt: 'desc'
                 }
             }
         }
@@ -105,6 +116,14 @@ export default async function ProductPage({ params }: { params: { id: string } }
                     </div>
                 </div>
             </div>
+
+            {/* Reviews Section */}
+            <ProductReviewSection
+                productId={product.id}
+                reviews={product.reviews}
+                userSession={session}
+            />
         </div>
     );
 }
+

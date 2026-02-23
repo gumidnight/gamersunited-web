@@ -13,7 +13,7 @@ const faqs = [
     },
     {
         question: "Is there a membership fee?",
-        answer: "Basic membership to Gamers United Cyprus is completely free! We want to keep gaming accessible to everyone. Some premium tournaments or exclusive events may have entry fees, which directly contribute to prize pools and event costs.",
+        answer: "Basic membership to Gamers United is completely free! We want to keep gaming accessible to everyone. Some premium tournaments or exclusive events may have entry fees, which directly contribute to prize pools and event costs.",
         category: "Community",
         icon: HelpCircle
     },
@@ -25,7 +25,7 @@ const faqs = [
     },
     {
         question: "How can my team partner with you?",
-        answer: "We love collaborating with local teams! Please reach out to our management team via the #partnerships channel on Discord or email us at partnerships@gamersunited.cy with your team profile and proposal.",
+        answer: "We love collaborating with local teams! Please reach out to our management team via the #partnerships channel on Discord or email us at contact@gamersunited.cy with your team profile and proposal.",
         category: "Community",
         icon: MessageSquare
     },

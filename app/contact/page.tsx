@@ -1,19 +1,39 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Mail, MapPin, Phone } from "lucide-react";
+import { Mail, MapPin, Phone, Loader2 } from "lucide-react";
 import siteContent from "@/content/site.json";
-import { useState, useRef } from "react";
+import { useRef, useState, useCallback } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 
 export default function ContactPage() {
     const { contact } = siteContent;
     const recaptchaRef = useRef<ReCAPTCHA>(null);
-    const [isVerified, setIsVerified] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [submitted, setSubmitted] = useState(false);
 
-    const handleCaptchaChange = (token: string | null) => {
-        setIsVerified(!!token);
-    };
+    const handleSubmit = useCallback(async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        setLoading(true);
+
+        try {
+            const token = await recaptchaRef.current?.executeAsync();
+            recaptchaRef.current?.reset();
+            // In a real app, you'd send this token to your backend to verify
+            console.log("reCAPTCHA Token:", token);
+
+            // Mock submission
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            setSubmitted(true);
+            alert("Message sent! We will get back to you soon.");
+        } catch (error) {
+            console.error(error);
+            alert("Failed to send message. Please try again.");
+        } finally {
+            setLoading(false);
+        }
+    }, []);
 
     return (
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
@@ -40,15 +60,12 @@ export default function ContactPage() {
                     className="glass rounded-2xl p-8"
                 >
                     <h2 className="text-2xl font-bold text-text-primary mb-6">Send a Message</h2>
-                    <form className="space-y-5" onSubmit={(e) => {
-                        e.preventDefault();
-                        if (!isVerified) {
-                            alert("Please complete the reCAPTCHA");
-                            return;
-                        }
-                        // Handle form submission logic here
-                        alert("Message sent! (Mock)");
-                    }}>
+                    <form className="space-y-5" onSubmit={handleSubmit}>
+                        <ReCAPTCHA
+                            ref={recaptchaRef}
+                            size="invisible"
+                            sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ""}
+                        />
                         <div>
                             <label htmlFor="name" className="block text-sm font-medium text-text-secondary mb-2">
                                 Name
@@ -86,22 +103,18 @@ export default function ContactPage() {
                             />
                         </div>
 
-                        {/* reCAPTCHA Widget */}
-                        <div className="py-2 flex justify-center sm:justify-start">
-                            <ReCAPTCHA
-                                ref={recaptchaRef}
-                                sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ""}
-                                onChange={handleCaptchaChange}
-                                theme="dark"
-                            />
-                        </div>
-
                         <button
                             type="submit"
-                            disabled={!isVerified}
-                            className="w-full bg-gradient-brand text-white py-4 rounded-xl font-bold shadow-neon-purple hover-glow-purple transition-all disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-widest text-sm"
+                            disabled={loading || submitted}
+                            className="w-full bg-gradient-brand text-white py-4 rounded-xl font-bold shadow-neon-purple hover-glow-purple transition-all disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-widest text-sm flex items-center justify-center gap-2"
                         >
-                            Send Message
+                            {loading ? (
+                                <><Loader2 size={18} className="animate-spin" /> Sending...</>
+                            ) : submitted ? (
+                                "Message Sent!"
+                            ) : (
+                                "Send Message"
+                            )}
                         </button>
                     </form>
                 </motion.div>

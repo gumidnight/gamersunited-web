@@ -39,7 +39,7 @@ export default async function SettingsPage() {
         console.error("Order fetch error:", error);
     }
 
-    const isAdmin = user.role === "ADMIN";
+    const isAdmin = (session.user as any).role === "ADMIN" || user.role === "ADMIN";
 
     return (
         <div className="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8 mt-24 text-text-primary">

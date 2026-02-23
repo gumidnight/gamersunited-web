@@ -18,7 +18,7 @@ export default function TermsPage() {
                     TERMS OF <span className="text-gradient-brand">SERVICE</span>
                 </h1>
                 <p className="text-text-secondary text-lg max-w-2xl mx-auto">
-                    By joining Gamers United Cyprus, you agree to uphold our values and follow these community rules.
+                    By joining Gamers United, you agree to uphold our values and follow these community rules.
                 </p>
             </motion.div>
 
@@ -29,7 +29,7 @@ export default function TermsPage() {
                         <h2 className="text-2xl font-black uppercase tracking-tight">1. Code of Conduct</h2>
                     </div>
                     <p className="text-text-secondary leading-relaxed text-lg">
-                        Gamers United Cyprus is an inclusive community. We have zero tolerance for harassment, racism, sexism, or any form of discrimination. Respect your fellow gamers at all times during tournaments and in our Discord channels.
+                        Gamers United is an inclusive community. We have zero tolerance for harassment, racism, sexism, or any form of discrimination. Respect your fellow gamers at all times during tournaments and in our Discord channels.
                     </p>
                 </div>
 
@@ -59,7 +59,7 @@ export default function TermsPage() {
                         <h2 className="text-2xl font-black uppercase tracking-tight">4. Limitation of Liability</h2>
                     </div>
                     <p className="text-text-secondary leading-relaxed text-lg">
-                        Gamers United Cyprus is not responsible for hardware issues, internet latency, or game-server outages during competitive play. All tournament results are final once verified by moderators.
+                        Gamers United is not responsible for hardware issues, internet latency, or game-server outages during competitive play. All tournament results are final once verified by moderators.
                     </p>
                 </div>
             </div>
@@ -70,7 +70,7 @@ export default function TermsPage() {
                 transition={{ delay: 1 }}
                 className="mt-16 text-center text-text-muted"
             >
-                Last revision: Feb 2026. For legal inquiries: <a href="mailto:admin@gamersunited.cy" className="text-neon-purple hover:underline">admin@gamersunited.cy</a>
+                Last revision: Feb 2026. For legal inquiries: <a href="mailto:contact@gamersunited.cy" className="text-neon-purple hover:underline">contact@gamersunited.cy</a>
             </motion.div>
         </div>
     );

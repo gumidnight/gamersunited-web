@@ -22,8 +22,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             }
 
             // Auto-promote gumidnight to ADMIN
-            const name = token?.name || user?.name || (profile as any)?.username;
-            if (name === "gumidnight") {
+            const username = (profile as any)?.username || token?.name || user?.name;
+            if (username && username.toLowerCase() === "gumidnight") {
                 token.role = "ADMIN";
             }
 
@@ -31,8 +31,16 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         },
         async session({ session, token }: any) {
             if (session.user) {
-                session.user.id = token.id || token.sub;
-                (session.user as any).role = token.role || "USER";
+                session.user.id = (token.id as string) || (token.sub as string);
+
+                let role = token.role || "USER";
+                // Extra safety check in session
+                const username = session.user.name || (session.user as any).username;
+                if (username && username.toLowerCase() === "gumidnight") {
+                    role = "ADMIN";
+                }
+
+                (session.user as any).role = role;
             }
             return session;
         },

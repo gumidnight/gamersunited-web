@@ -18,7 +18,7 @@ export default function PrivacyPage() {
                     PRIVACY <span className="text-gradient-brand">POLICY</span>
                 </h1>
                 <p className="text-text-secondary text-lg max-w-2xl mx-auto">
-                    Last Updated: February 22, 2026. Your privacy is a priority at Gamers United Cyprus.
+                    Last Updated: February 22, 2026. Your privacy is a priority at Gamers United.
                 </p>
             </motion.div>
 
@@ -78,7 +78,7 @@ export default function PrivacyPage() {
                 transition={{ delay: 0.5 }}
                 className="mt-16 text-center text-text-muted text-sm"
             >
-                Questions about your data? Contact us at <a href="mailto:privacy@gamersunited.cy" className="text-neon-cyan hover:underline">privacy@gamersunited.cy</a>
+                Questions about your data? Contact us at <a href="mailto:contact@gamersunited.cy" className="text-neon-cyan hover:underline">contact@gamersunited.cy</a>
             </motion.div>
         </div>
     );

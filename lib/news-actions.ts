@@ -13,6 +13,7 @@ export async function createNewsPost(formData: FormData) {
 
     const title = formData.get("title") as string
     const content = formData.get("content") as string
+    const coverImage = formData.get("coverImage") as string
     const slug = title.toLowerCase().replace(/ /g, "-").replace(/[^\w-]+/g, "")
 
     await prisma.newsPost.create({
@@ -20,6 +21,7 @@ export async function createNewsPost(formData: FormData) {
             title,
             content,
             slug,
+            coverImage,
             published: true,
             authorId: session.user.id || "admin",
         }
@@ -38,6 +40,7 @@ export async function updateNewsPost(postId: string, formData: FormData) {
 
     const title = formData.get("title") as string
     const content = formData.get("content") as string
+    const coverImage = formData.get("coverImage") as string
     const slug = title.toLowerCase().replace(/ /g, "-").replace(/[^\w-]+/g, "")
 
     await prisma.newsPost.update({
@@ -46,6 +49,7 @@ export async function updateNewsPost(postId: string, formData: FormData) {
             title,
             content,
             slug,
+            coverImage,
         }
     })
 

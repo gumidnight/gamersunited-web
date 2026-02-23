@@ -50,7 +50,7 @@ export default function InstagramFeed() {
                             </div>
                             <div className="text-left">
                                 <h3 className="text-xl font-black text-text-primary leading-none mb-2 tracking-tight">gamersunitedcy</h3>
-                                <p className="text-sm text-text-secondary font-bold">Gamers United Cyprus</p>
+                                <p className="text-sm text-text-secondary font-bold">Gamers United</p>
                                 <div className="flex gap-6 mt-3">
                                     <div className="text-sm text-text-primary"><strong>948</strong> <span className="text-text-muted font-medium ml-1">followers</span></div>
                                     <div className="text-sm text-text-primary"><strong>98</strong> <span className="text-text-muted font-medium ml-1">posts</span></div>

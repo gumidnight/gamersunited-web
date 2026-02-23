@@ -4,6 +4,7 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { getPrintfulProducts } from "@/services/printful";
 import { revalidatePath } from "next/cache";
+import { headers } from "next/headers";
 
 export async function syncPrintfulProducts() {
     const session = await auth();
@@ -78,6 +79,9 @@ export async function createCheckoutSession(variantId: string) {
     }
 
     try {
+        const headersList = await headers();
+        const origin = headersList.get("origin") || process.env.NEXTAUTH_URL || "http://localhost:3000";
+
         const variant = await prisma.variant.findUnique({
             where: { id: variantId },
             include: { product: true }
@@ -104,8 +108,8 @@ export async function createCheckoutSession(variantId: string) {
                 },
             ],
             mode: "payment",
-            success_url: `${process.env.NEXTAUTH_URL}/shop/success?session_id={CHECKOUT_SESSION_ID}`,
-            cancel_url: `${process.env.NEXTAUTH_URL}/shop/${variant.productId}`,
+            success_url: `${origin}/shop/success?session_id={CHECKOUT_SESSION_ID}`,
+            cancel_url: `${origin}/shop/${variant.productId}`,
             customer_email: session.user.email || undefined,
             metadata: {
                 userId: session.user.id || "",
@@ -123,3 +127,33 @@ export async function createCheckoutSession(variantId: string) {
         throw new Error(`Checkout failed: ${error.message}`);
     }
 }
+
+export async function postProductReview(productId: string, rating: number, content: string) {
+    const session = await auth();
+    if (!session?.user?.id) {
+        throw new Error("You must be logged in to leave a review.");
+    }
+
+    if (!rating || rating < 1 || rating > 5) {
+        throw new Error("Rating must be between 1 and 5.");
+    }
+
+    try {
+        await prisma.review.create({
+            data: {
+                rating,
+                content,
+                userId: session.user.id,
+                productId,
+            }
+        });
+
+        revalidatePath(`/shop/${productId}`);
+        revalidatePath("/shop"); // To update homepage highlights
+        return { success: true };
+    } catch (error) {
+        console.error("Error posting review:", error);
+        return { success: false, error: "Failed to post review." };
+    }
+}
+
