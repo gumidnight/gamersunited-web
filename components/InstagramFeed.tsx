@@ -4,15 +4,15 @@ import { Heart, Instagram } from "lucide-react";
 import Image from "next/image";
 
 const instaPosts = [
-    { id: 1, image: "/ig-1.jpg", likes: "1.2k" },
-    { id: 2, image: "/ig-2.jpg", likes: "856" },
-    { id: 3, image: "/ig-3.jpg", likes: "2.1k" },
+    { id: 1, image: "/community.png", likes: "1.2k" },
+    { id: 2, image: "/tournaments.jpg", likes: "856" },
+    { id: 3, image: "/merch.jpg", likes: "2.1k" },
     { id: 4, image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=2070", likes: "1.5k" },
     { id: 5, image: "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=2071", likes: "943" },
     { id: 6, image: "https://images.unsplash.com/photo-1593305841991-05c297ba4575?auto=format&fit=crop&q=80&w=1957", likes: "2.8k" },
-    { id: 7, image: "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?auto=format&fit=crop&q=80&w=2070", likes: "612" },
-    { id: 8, image: "https://images.unsplash.com/photo-1511884642898-4c92249e20b6?auto=format&fit=crop&q=80&w=2070", likes: "1.1k" },
-    { id: 9, image: "https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?auto=format&fit=crop&q=80&w=2070", likes: "4.2k" }
+    { id: 7, image: "/ig-1.jpg", likes: "3.2k" },
+    { id: 8, image: "/ig-2.jpg", likes: "2.5k" },
+    { id: 9, image: "/ig-3.jpg", likes: "4.8k" }
 ];
 
 export default function InstagramFeed() {
