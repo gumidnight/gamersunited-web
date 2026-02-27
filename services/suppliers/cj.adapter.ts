@@ -580,14 +580,37 @@ export class CJDropshippingAdapter extends SupplierAdapter {
 
     // ── Private: Normalization ────────────────────────────────────────────
 
+    private extractImageUrls(value: any): string[] {
+        if (!value) return [];
+        if (Array.isArray(value)) {
+            return value.filter((v) => typeof v === "string" && /^https?:\/\//.test(v));
+        }
+        if (typeof value === "string") {
+            // CJ sometimes returns JSON-stringified arrays in image fields.
+            const trimmed = value.trim();
+            if (trimmed.startsWith("[") && trimmed.endsWith("]")) {
+                try {
+                    const parsed = JSON.parse(trimmed);
+                    if (Array.isArray(parsed)) {
+                        return parsed.filter((v) => typeof v === "string" && /^https?:\/\//.test(v));
+                    }
+                } catch {
+                    // Fall back to treating it as plain URL below
+                }
+            }
+            if (/^https?:\/\//.test(trimmed)) return [trimmed];
+        }
+        return [];
+    }
+
     private normalizeProduct(p: any): NormalizedProduct {
         // Images
         const images: string[] = [];
-        if (p.productImage) images.push(p.productImage);
-        if (Array.isArray(p.productImageSet)) {
-            for (const img of p.productImageSet) {
-                if (typeof img === "string" && !images.includes(img)) images.push(img);
-            }
+        for (const img of this.extractImageUrls(p.productImage)) {
+            if (!images.includes(img)) images.push(img);
+        }
+        for (const img of this.extractImageUrls(p.productImageSet)) {
+            if (!images.includes(img)) images.push(img);
         }
 
         // Variants — from the product detail response
@@ -617,16 +640,18 @@ export class CJDropshippingAdapter extends SupplierAdapter {
             title: p.productNameEn || p.productName || "Untitled",
             description: p.description || p.productNameEn || "",
             images,
-            thumbnailUrl: p.productImage || null,
+            thumbnailUrl: images[0] || null,
             variants,
         };
     }
 
     private normalizeVariant(v: any, product: any): NormalizedVariant {
         const images: string[] = [];
-        if (v.variantImage) images.push(v.variantImage);
-        if (product.productImage && !images.includes(product.productImage)) {
-            images.push(product.productImage);
+        for (const img of this.extractImageUrls(v.variantImage)) {
+            if (!images.includes(img)) images.push(img);
+        }
+        for (const img of this.extractImageUrls(product.productImage)) {
+            if (!images.includes(img)) images.push(img);
         }
 
         // Parse color/size from variantKey
@@ -672,7 +697,7 @@ export class CJDropshippingAdapter extends SupplierAdapter {
             stock,
             color,
             size,
-            image: v.variantImage || product.productImage || null,
+            image: images[0] || null,
             images,
         };
     }
