@@ -139,6 +139,7 @@ async function dispatchToSupplier(
     // Look up the supplier DB record
     const supplier = await prisma.supplier.findUnique({
         where: { slug: supplierType },
+        select: { id: true, slug: true, isActive: true },
     });
 
     if (!supplier) {
@@ -201,6 +202,7 @@ async function dispatchToSupplier(
         try {
             const supplierForError = await prisma.supplier.findUnique({
                 where: { slug: supplierType },
+                select: { id: true },
             });
             if (supplierForError) {
                 await prisma.supplierOrder.create({

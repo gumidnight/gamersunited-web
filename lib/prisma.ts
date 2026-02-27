@@ -17,32 +17,17 @@ if (typeof WebSocket === 'undefined') {
     }
 }
 
-const connectionString = process.env.DATABASE_URL
-if (!connectionString) {
-    throw new Error("DATABASE_URL is not set")
-}
-
-const isNeonUrl = connectionString.includes("neon.tech")
+const connectionString = process.env.DATABASE_URL!
+neonConfig.poolQueryViaFetch = true
+const adapter = new PrismaNeon({ connectionString })
 
 const globalForPrisma = global as unknown as { prisma: PrismaClient }
 
 export const prisma =
     globalForPrisma.prisma ||
-    (() => {
-        // Neon serverless adapter only for Neon-hosted Postgres URLs.
-        if (isNeonUrl) {
-            neonConfig.poolQueryViaFetch = true
-            const adapter = new PrismaNeon({ connectionString })
-            return new PrismaClient({
-                adapter,
-                log: process.env.NODE_ENV === 'development' ? ['query'] : [],
-            })
-        }
-
-        // Local/standard Postgres connections should use native Prisma driver.
-        return new PrismaClient({
-            log: process.env.NODE_ENV === 'development' ? ['query'] : [],
-        })
-    })()
+    new PrismaClient({
+        adapter,
+        log: process.env.NODE_ENV === 'development' ? ['query'] : [],
+    })
 
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma

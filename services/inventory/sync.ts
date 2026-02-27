@@ -22,6 +22,7 @@ import { isPriceChangeSignificant } from "@/lib/pricing";
 export async function syncAllInventory() {
     const suppliers = await prisma.supplier.findMany({
         where: { isActive: true },
+        select: { slug: true, isActive: true },
     });
 
     const results: Record<string, { updated: number; disabled: number; errors: number }> = {};

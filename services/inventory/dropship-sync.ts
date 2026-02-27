@@ -37,6 +37,7 @@ export async function syncSpecificDropshipProduct(
     // Get or create supplier record
     let supplier = await prisma.supplier.findUnique({
         where: { slug: supplierSlug },
+        select: { id: true, name: true, slug: true, isActive: true },
     });
 
     if (!supplier) {
@@ -84,6 +85,7 @@ export async function syncDropshipProducts(
     // Get or create supplier record
     let supplier = await prisma.supplier.findUnique({
         where: { slug: supplierSlug },
+        select: { id: true, name: true, slug: true, isActive: true },
     });
 
     if (!supplier) {
