@@ -129,6 +129,10 @@ export default function ProductInteractiveViewer({
 
     async function handleAddToCart() {
         if (!selectedVariant) return;
+        if (selectedVariant.stock <= 0) {
+            setError("This variant is currently out of stock.");
+            return;
+        }
 
         setLoading(true);
         setError("");
@@ -323,7 +327,7 @@ export default function ProductInteractiveViewer({
                     <div className="flex flex-col gap-4 pt-6 mt-6 border-t border-surface-border">
                         <button
                             onClick={handleAddToCart}
-                            disabled={loading || !selectedVariant}
+                            disabled={loading || !selectedVariant || selectedVariant.stock <= 0}
                             className={`w-full py-5 rounded-2xl font-black transition-all transform hover:-translate-y-1 uppercase tracking-widest text-sm flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none ${addedToCart ? "bg-emerald-500 text-white" : "bg-neon-cyan text-background shadow-[0_0_20px_rgba(34,211,238,0.3)] hover:shadow-[0_0_30px_rgba(34,211,238,0.5)]"
                                 }`}
                         >
@@ -337,7 +341,7 @@ export default function ProductInteractiveViewer({
                                 </>
                             ) : (
                                 <>
-                                    <ShoppingBag size={20} /> Add to Cart — €{currentPrice.toFixed(2)}
+                                    <ShoppingBag size={20} /> {selectedVariant?.stock && selectedVariant.stock > 0 ? `Add to Cart — €${currentPrice.toFixed(2)}` : "Out of Stock"}
                                 </>
                             )}
                         </button>

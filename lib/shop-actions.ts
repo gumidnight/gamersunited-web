@@ -369,7 +369,7 @@ export async function createCartCheckoutSession(items: { variantId: string, quan
         });
 
         if (dbVariants.length === 0) {
-            throw new Error("No products found");
+            return { error: "No products found in your cart. Please refresh and try again." };
         }
 
         // ── Pre-checkout stock validation for dropship products ──────────
@@ -390,7 +390,7 @@ export async function createCartCheckoutSession(items: { variantId: string, quan
         }
 
         if (stockErrors.length > 0) {
-            throw new Error(`Insufficient stock:\n${stockErrors.join("\n")}`);
+            return { error: `Insufficient stock:\n${stockErrors.join("\n")}` };
         }
 
         const lineItems = items.map(item => {
@@ -419,7 +419,7 @@ export async function createCartCheckoutSession(items: { variantId: string, quan
         }).filter(Boolean);
 
         if (lineItems.length === 0) {
-            throw new Error("All items are currently unavailable.");
+            return { error: "All items are currently unavailable." };
         }
 
         const stripeSession = await stripe.checkout.sessions.create({
@@ -443,7 +443,7 @@ export async function createCartCheckoutSession(items: { variantId: string, quan
         return { url: stripeSession.url };
     } catch (error: any) {
         console.error("Checkout error:", error);
-        throw new Error(`Checkout failed: ${error.message}`);
+        return { error: `Checkout failed: ${error.message || "Unknown error"}` };
     }
 }
 

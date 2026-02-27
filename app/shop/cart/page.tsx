@@ -23,9 +23,17 @@ export default function CartPage() {
                 quantity: item.quantity
             }));
             const result = await createCartCheckoutSession(checkoutItems);
+            if (result.error) {
+                setError(result.error);
+                setLoading(false);
+                return;
+            }
             if (result.url) {
                 window.location.href = result.url;
+                return;
             }
+            setError("Failed to initiate checkout");
+            setLoading(false);
         } catch (err: any) {
             console.error(err);
             setError(err.message || "Failed to initiate checkout");

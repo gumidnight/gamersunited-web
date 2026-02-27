@@ -26,9 +26,17 @@ export default function ProductPurchaseSection({ variants }: { variants: Variant
 
         try {
             const result = await createCheckoutSession(selectedVariantId);
+            if (result.error) {
+                setError(result.error);
+                setLoading(false);
+                return;
+            }
             if (result.url) {
                 window.location.href = result.url;
+                return;
             }
+            setError("Failed to initiate checkout");
+            setLoading(false);
         } catch (err: any) {
             console.error(err);
             setError(err.message || "Something went wrong. Please try again.");
