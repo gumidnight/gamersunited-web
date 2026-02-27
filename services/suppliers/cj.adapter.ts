@@ -679,9 +679,12 @@ export class CJDropshippingAdapter extends SupplierAdapter {
             }
         }
 
-        // Stock: sum totalInventoryNum from embedded inventories array
-        let stock = 0;
-        if (Array.isArray(v.inventories)) {
+        // Stock: sum totalInventoryNum from embedded inventories array.
+        // CJ sometimes omits inventories in product detail responses even when
+        // the item is sellable. In that case, keep it sellable until cron
+        // inventory sync resolves authoritative stock via queryByVid.
+        let stock = 999;
+        if (Array.isArray(v.inventories) && v.inventories.length > 0) {
             stock = v.inventories.reduce(
                 (sum: number, inv: any) => sum + (inv.totalInventoryNum || inv.totalInventory || 0),
                 0
