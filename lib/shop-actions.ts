@@ -63,6 +63,7 @@ export async function syncPrintfulProducts(triggerType: string = "MANUAL") {
             // Deactivate orphaned variants
             const deactivatedVariants = await prisma.variant.updateMany({
                 where: {
+                    product: { supplierType: "printful" },
                     providerId: { notIn: validVariantProviderIds },
                     isActive: true,
                     NOT: {
@@ -75,6 +76,7 @@ export async function syncPrintfulProducts(triggerType: string = "MANUAL") {
             // Deactivate orphaned products
             const deactivatedProducts = await prisma.product.updateMany({
                 where: {
+                    supplierType: "printful",
                     providerId: { notIn: validProductProviderIds },
                     isActive: true,
                     manualOverride: false, // Don't deactivate products marked for manual management
@@ -90,9 +92,11 @@ export async function syncPrintfulProducts(triggerType: string = "MANUAL") {
                 `[Sync] Deactivated ${deactivatedProducts.count} products, ${deactivatedVariants.count} variants`
             );
         } else if (productsDetails.length === 0) {
-            // If Printful returned zero products, deactivate everything EXCEPT custom ones
+            // If Printful returned zero products, deactivate only printful products
+            // (never touch CJ/manual products in this code path).
             await prisma.product.updateMany({
                 where: {
+                    supplierType: "printful",
                     isActive: true,
                     manualOverride: false,
                     NOT: { providerId: { startsWith: 'CUSTOM-' } }
