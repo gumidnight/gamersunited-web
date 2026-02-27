@@ -1,15 +1,20 @@
 export const dynamic = "force-dynamic";
 import { prisma } from "@/lib/prisma";
+import Link from "next/link";
 import SyncButton from "@/components/SyncButton";
-import { ShoppingBag, Tag, Box, ArrowRight } from "lucide-react";
+import DeleteProductButton from "@/components/DeleteProductButton";
+import { ShoppingBag, Tag, Box, ArrowRight, Plus } from "lucide-react";
 import Image from "next/image";
+import WebhookManager from "@/components/WebhookManager";
+import CJProductImport from "@/components/CJProductImport";
 
 export default async function AdminShopPage() {
     const products = await prisma.product.findMany({
         include: {
             variants: true
         },
-        orderBy: { title: 'asc' }
+        orderBy: { title: 'asc' },
+        where: { isActive: true } // Only show active products to hide deleted ones
     });
 
     return (
@@ -20,11 +25,22 @@ export default async function AdminShopPage() {
                         Shop <span className="text-gradient-brand">Management</span>
                     </h1>
                     <p className="text-text-muted">
-                        Sync and manage your products from Printful.
+                        Sync and manage your products from Printful or create custom ones.
                     </p>
                 </div>
-                <SyncButton />
+                <div className="flex gap-4">
+                    <Link
+                        href="/admin/shop/new"
+                        className="bg-surface-raised hover:bg-surface-overlay text-text-primary px-6 py-3 rounded-xl font-bold uppercase tracking-widest transition-all border border-surface-border flex items-center gap-2"
+                    >
+                        <Plus size={18} className="text-neon-cyan" />
+                        Create Custom
+                    </Link>
+                    <SyncButton />
+                </div>
             </div>
+
+            <CJProductImport />
 
             <div className="grid grid-cols-1 gap-6">
                 {products.length === 0 ? (
@@ -43,6 +59,7 @@ export default async function AdminShopPage() {
                                         alt={product.title}
                                         fill
                                         className="object-cover"
+                                        unoptimized
                                     />
                                 ) : (
                                     <Box size={32} className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-text-muted opacity-20" />
@@ -71,13 +88,18 @@ export default async function AdminShopPage() {
                                 </div>
                             </div>
 
-                            <button className="bg-surface-raised hover:bg-surface-overlay text-text-primary p-3 rounded-xl transition-all border border-surface-border">
-                                <ArrowRight size={20} />
-                            </button>
+                            <div className="flex gap-2">
+                                <DeleteProductButton productId={product.id} productName={product.title} />
+                                <Link href={`/admin/shop/${product.id}`} className="bg-surface-raised hover:bg-surface-overlay text-text-primary p-3 rounded-xl transition-all border border-surface-border">
+                                    <ArrowRight size={20} />
+                                </Link>
+                            </div>
                         </div>
                     ))
                 )}
             </div>
+
+            <WebhookManager />
         </div>
     );
 }

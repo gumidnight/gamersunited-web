@@ -81,7 +81,7 @@ export default function FAQPage() {
                 className="text-center mb-16"
             >
                 <h1 className="text-5xl md:text-6xl font-black mb-4 uppercase italic tracking-tighter">
-                    FREQUENTLY ASKED <span className="text-gradient-brand">QUESTIONS</span>
+                    FREQUENTLY ASKED <span className="text-gradient-brand pr-2">QUESTIONS</span>
                 </h1>
                 <p className="text-text-secondary text-lg max-w-2xl mx-auto">
                     Everything you need to know about the biggest gaming community in Cyprus. Can't find what you're looking for? Join our Discord.
@@ -110,9 +110,9 @@ export default function FAQPage() {
                 <h3 className="text-2xl font-black mb-4 uppercase">STILL HAVE QUESTIONS?</h3>
                 <p className="text-text-secondary mb-8">Join our Discord server and talk to our support team directly.</p>
                 <a
-                    href="https://discord.gg/gamersunitedcy"
+                    href="https://discord.com/invite/9RVBd6r"
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noopener noreferrer"
                     className="inline-block bg-gradient-brand text-white px-10 py-4 rounded-xl font-bold hover:scale-105 transition-transform"
                 >
                     Join Discord Support

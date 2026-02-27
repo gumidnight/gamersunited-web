@@ -56,7 +56,7 @@ export default function CommunityPage() {
                 <a
                     href={community.discord.href}
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 bg-[#5865F2] hover:bg-[#4752C4] text-white px-8 py-4 rounded-xl font-bold text-lg shadow-[0_0_20px_rgba(88,101,242,0.4)] transition-all"
                 >
                     <MessageCircle size={22} /> {community.discord.buttonLabel}

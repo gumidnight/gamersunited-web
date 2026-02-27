@@ -195,7 +195,7 @@ export default function HeroBanner({
   }, []);
 
   return (
-    <section className="relative w-full min-h-[100vh] flex items-center justify-center overflow-hidden">
+    <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image Container */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <Image
@@ -203,6 +203,8 @@ export default function HeroBanner({
           alt="Hero Background"
           fill
           priority
+          sizes="100vw"
+          quality={75}
           className="object-cover opacity-45 pointer-events-none"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-surface-base/70 via-surface-base/20 to-surface-base" />
@@ -229,20 +231,20 @@ export default function HeroBanner({
       />
 
       {/* Content */}
-      <div className="relative z-10 flex flex-col items-center text-center px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto pt-20">
+      <div className="relative z-10 flex flex-col items-center text-center px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto pt-24 sm:pt-20 pb-32 sm:pb-0">
         {/* Logo */}
         <motion.div
           initial={{ opacity: 0, scale: 0.8, y: 30 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-8"
+          className="mb-6 sm:mb-8"
         >
           <Image
             src="/full-logo.png"
             alt={title}
             width={400}
             height={120}
-            className="w-[280px] sm:w-[340px] md:w-[400px] h-auto drop-shadow-[0_0_30px_rgba(123,47,247,0.4)]"
+            className="w-[200px] sm:w-[340px] md:w-[400px] h-auto drop-shadow-[0_0_30px_rgba(123,47,247,0.4)]"
             priority
           />
         </motion.div>
@@ -252,9 +254,9 @@ export default function HeroBanner({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="mb-8"
+          className="mb-6 sm:mb-8"
         >
-          <span className="inline-block px-7 py-3 rounded-full text-sm font-black tracking-[0.2em] uppercase border-2 border-neon-purple/60 bg-neon-purple/10 text-neon-purple-light shadow-[0_0_20px_rgba(123,47,247,0.2)]">
+          <span className="inline-block px-5 sm:px-7 py-2 sm:py-3 rounded-full text-[10px] sm:text-sm font-black tracking-[0.2em] uppercase border-2 border-neon-purple/60 bg-neon-purple/10 text-neon-purple-light shadow-[0_0_20px_rgba(123,47,247,0.2)]">
             {subtitle}
           </span>
         </motion.div>
@@ -264,10 +266,10 @@ export default function HeroBanner({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.5 }}
-          className="text-3xl sm:text-5xl md:text-7xl font-black tracking-tight mb-6 font-[var(--font-heading)] uppercase italic"
+          className="text-[2.6rem] leading-[1.1] sm:text-5xl md:text-7xl font-black tracking-tight mb-4 sm:mb-6 font-[var(--font-heading)] uppercase italic"
         >
-          YOUR GAME. <br className="hidden sm:block" />
-          <span className="text-gradient-brand">OUR DOMAINE.</span>
+          YOUR GAME. <br />
+          <span className="text-gradient-brand">OUR DOMAIN.</span>
         </motion.h1>
 
         {/* Description */}
@@ -275,7 +277,7 @@ export default function HeroBanner({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.7 }}
-          className="text-text-secondary text-base sm:text-lg md:text-xl max-w-2xl mb-10 leading-relaxed"
+          className="text-text-secondary text-sm sm:text-base md:text-xl max-w-2xl mb-8 sm:mb-10 leading-relaxed"
         >
           {description}
         </motion.p>
@@ -285,15 +287,16 @@ export default function HeroBanner({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.9 }}
-          className="flex flex-col sm:flex-row items-center gap-4 mb-20"
+          className="flex flex-col sm:flex-row items-center gap-4"
         >
           <a
-            href={ctaPrimary.href}
+            href="https://discord.com/invite/9RVBd6r"
             target="_blank"
-            rel="noreferrer"
-            className="bg-gradient-brand text-white px-8 py-4 rounded-xl font-bold shadow-neon-purple hover-glow-purple transition-all flex items-center justify-center gap-2 group w-full sm:w-auto"
+            rel="noopener noreferrer"
+            className="bg-gradient-brand text-white px-8 py-4 rounded-xl font-black shadow-neon-purple hover-glow-purple transition-all flex items-center justify-center gap-2 group w-full sm:w-auto uppercase tracking-wider relative overflow-hidden"
           >
-            {ctaPrimary.label}
+            <div className="absolute inset-0 bg-white/20 w-0 group-hover:w-full transition-all duration-300 ease-out" />
+            <span className="relative z-10">{ctaPrimary.label}</span>
             <svg
               className="w-5 h-5 group-hover:translate-x-1 transition-transform"
               fill="none"
@@ -310,28 +313,28 @@ export default function HeroBanner({
           </a>
           <a
             href={ctaSecondary.href}
-            className="border border-surface-border hover:border-neon-cyan text-text-primary hover:text-neon-cyan px-8 py-4 rounded-xl font-bold transition-all w-full sm:w-auto text-center hover-glow-cyan"
+            className="border-2 border-text-muted/50 hover:border-neon-cyan text-text-primary hover:text-neon-cyan px-8 py-4 rounded-xl font-bold transition-all w-full sm:w-auto text-center shadow-sm"
           >
             {ctaSecondary.label}
           </a>
         </motion.div>
-
-        {/* Scroll indicator (Fixed position) */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.5, duration: 0.8 }}
-          className="mt-4"
-        >
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            className="w-6 h-10 rounded-full border-2 border-neon-purple/20 flex items-start justify-center p-1.5"
-          >
-            <motion.div className="w-1.5 h-1.5 rounded-full bg-neon-purple" />
-          </motion.div>
-        </motion.div>
       </div>
+
+      {/* Scroll indicator (Absolutely positioned at bottom) */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.5, duration: 0.8 }}
+        className="absolute bottom-12 left-1/2 -translate-x-1/2 z-20 pointer-events-none"
+      >
+        <motion.div
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          className="w-6 h-10 rounded-full border-2 border-neon-purple/20 flex items-start justify-center p-1.5"
+        >
+          <motion.div className="w-1.5 h-1.5 rounded-full bg-neon-purple" />
+        </motion.div>
+      </motion.div>
     </section>
   );
 }

@@ -4,9 +4,48 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { ShoppingBag, ArrowLeft, ShieldCheck, Truck, RotateCcw } from "lucide-react";
 import Link from "next/link";
-import ProductPurchaseSection from "@/components/ProductPurchaseSection";
 import ProductReviewSection from "@/components/ProductReviewSection";
+import ProductInteractiveViewer from "@/components/ProductInteractiveViewer";
 import { auth } from "@/auth";
+import type { Metadata } from 'next';
+
+export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+    const { id } = await params;
+    const product = await prisma.product.findUnique({
+        where: { id },
+        include: { variants: true }
+    });
+
+    if (!product) {
+        return { title: 'Product Not Found' };
+    }
+
+    const defaultVariant = product.variants?.[0];
+    const imageUrl = defaultVariant?.image || defaultVariant?.images?.[0] || product.image || '/og-image.jpg';
+    const plainDescription = product.description ? product.description.replace(/<[^>]*>?/gm, '').substring(0, 160) : "";
+
+    return {
+        title: `${product.title} | Gamers United`,
+        description: plainDescription,
+        openGraph: {
+            title: product.title,
+            description: plainDescription,
+            url: `https://gamersunited.cy/shop/${id}`,
+            images: [
+                {
+                    url: imageUrl,
+                    width: 1200,
+                    height: 630,
+                    alt: product.title,
+                }
+            ],
+            type: 'website',
+        },
+        other: {
+            "og:type": "product"
+        }
+    };
+}
 
 export default async function ProductPage({ params }: { params: { id: string } }) {
     const { id } = await params;
@@ -44,78 +83,26 @@ export default async function ProductPage({ params }: { params: { id: string } }
                 <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" /> Back to Shop
             </Link>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-                {/* Product Image */}
-                <div className="relative aspect-square lg:aspect-[4/5] rounded-3xl overflow-hidden glass shadow-2xl border border-surface-border">
-                    {product.image ? (
-                        <Image
-                            src={product.image}
-                            alt={product.title}
-                            fill
-                            className="object-cover"
-                            priority
-                        />
-                    ) : (
-                        <div className="w-full h-full flex items-center justify-center bg-surface-raised">
-                            <ShoppingBag size={80} className="text-text-muted opacity-20" />
-                        </div>
-                    )}
-                </div>
-
-                {/* Product Info */}
-                <div className="flex flex-col">
-                    <h1 className="text-4xl md:text-5xl font-black text-text-primary mb-4 leading-tight">
-                        {product.title}
-                    </h1>
-
-                    <div className="flex items-center gap-4 mb-8">
-                        <div className="text-3xl font-black text-neon-cyan">
-                            €{product.variants[0]?.price.toFixed(2) || product.price.toFixed(2)}
-                        </div>
-                        <span className="bg-surface-raised text-text-muted text-[10px] font-black uppercase px-3 py-1 rounded-full border border-surface-border tracking-widest">
-                            Official Merch
-                        </span>
-                    </div>
-
-                    <div className="prose prose-invert max-w-none mb-10">
-                        <p className="text-text-secondary text-lg leading-relaxed">
-                            {product.description.replace(/<[^>]*>?/gm, '')}
-                        </p>
-                    </div>
-
-                    {/* Purchase Section (Client Component) */}
-                    <ProductPurchaseSection
-                        variants={product.variants.map(v => ({
-                            id: v.id,
-                            title: v.title,
-                            price: v.price,
-                            stock: v.stock
-                        }))}
-                    />
-
-                    {/* Trust Badges */}
-                    <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-6 pt-12 border-t border-surface-border">
-                        <div className="flex flex-col items-center text-center gap-3">
-                            <div className="w-12 h-12 rounded-2xl bg-neon-purple/10 flex items-center justify-center text-neon-purple">
-                                <ShieldCheck size={24} />
-                            </div>
-                            <span className="text-xs font-bold text-text-primary uppercase tracking-widest">Secure Payment</span>
-                        </div>
-                        <div className="flex flex-col items-center text-center gap-3">
-                            <div className="w-12 h-12 rounded-2xl bg-neon-cyan/10 flex items-center justify-center text-neon-cyan">
-                                <Truck size={24} />
-                            </div>
-                            <span className="text-xs font-bold text-text-primary uppercase tracking-widest">EU Shipping</span>
-                        </div>
-                        <div className="flex flex-col items-center text-center gap-3">
-                            <div className="w-12 h-12 rounded-2xl bg-neon-pink/10 flex items-center justify-center text-neon-pink">
-                                <RotateCcw size={24} />
-                            </div>
-                            <span className="text-xs font-bold text-text-primary uppercase tracking-widest">Easy Returns</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <ProductInteractiveViewer
+                product={{
+                    id: product.id,
+                    title: product.title,
+                    description: product.description,
+                    image: product.image,
+                    price: product.price,
+                    customImages: product.customImages
+                }}
+                variants={product.variants.map(v => ({
+                    id: v.id,
+                    title: v.title,
+                    price: v.price,
+                    stock: v.stock,
+                    color: v.color,
+                    size: v.size,
+                    image: v.image,
+                    images: v.images
+                }))}
+            />
 
             {/* Reviews Section */}
             <ProductReviewSection

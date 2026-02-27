@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Save, Plus, X, Loader2, ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
+import DeleteProductButton from "@/components/DeleteProductButton";
 
 export default function AdminEditProductPage({ params }: { params: { id: string } }) {
     const router = useRouter();
@@ -130,9 +131,12 @@ export default function AdminEditProductPage({ params }: { params: { id: string 
                 <ArrowLeft size={16} /> Back to Shop
             </button>
 
-            <h1 className="text-3xl font-black uppercase tracking-wider mb-8 flex items-center gap-4">
-                Edit Product
-            </h1>
+            <div className="flex justify-between items-center mb-8">
+                <h1 className="text-3xl font-black uppercase tracking-wider flex items-center gap-4">
+                    Edit Product
+                </h1>
+                <DeleteProductButton productId={id} productName={product?.title || ""} />
+            </div>
 
             <div className="glass rounded-3xl p-8 space-y-8 border border-surface-border">
                 {/* Product Info */}

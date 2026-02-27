@@ -60,7 +60,7 @@ export default function InstagramFeed() {
                         <a
                             href="https://www.instagram.com/gamersunitedcy/"
                             target="_blank"
-                            rel="noreferrer"
+                            rel="noopener noreferrer"
                             className="bg-neon-pink hover:bg-neon-pink/80 text-white px-10 py-4 rounded-2xl text-xs font-black uppercase tracking-[0.2em] transition-all hover:scale-105 active:scale-95 shadow-lg shadow-neon-pink/20"
                         >
                             Follow Community
@@ -74,7 +74,7 @@ export default function InstagramFeed() {
                                 key={post.id}
                                 href="https://www.instagram.com/gamersunitedcy/"
                                 target="_blank"
-                                rel="noreferrer"
+                                rel="noopener noreferrer"
                                 className="group relative aspect-square overflow-hidden rounded-lg bg-surface-base"
                             >
                                 <Image

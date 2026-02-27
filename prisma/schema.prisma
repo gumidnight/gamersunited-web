@@ -78,31 +78,150 @@ model Comment {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Supplier Registry
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Supplier {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique // "printful", "cj", etc.
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  // Token management for dropship APIs
+  accessToken      String?  @db.Text
+  refreshToken     String?  @db.Text
+  tokenExpiresAt   DateTime?
+  refreshExpiresAt DateTime?
+
+  products       Product[]
+  supplierOrders SupplierOrder[]
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// E-Shop: Products + Variants + Images + Sync Metadata
+// ─────────────────────────────────────────────────────────────────────────────
+
 model Product {
-  id          String    @id @default(cuid())
-  title       String
-  description String
-  price       Float
-  stock       Int       @default(0)
-  sku         String?
-  image       String?
-  images      String[]
-  providerId  String    @unique
-  reviews     Review[]
-  variants    Variant[]
+  id                String         @id @default(cuid())
+  title             String
+  description       String         @db.Text
+  price             Float
+  stock             Int            @default(0)
+  sku               String?
+  image             String?        @db.Text
+  images            String[]
+
+  /// Printful sync product ID — the canonical external identifier
+  providerId        String         @unique
+  /// Printful catalog product ID (not the sync product ID)
+  printfulProductId Int?
+
+  /// Custom manually managed secondary images URLs
+  customImages      String[]       @default([])
+
+  isActive          Boolean        @default(true)
+  /// If true, title/description are NOT overwritten during sync
+  manualOverride    Boolean        @default(false)
+
+  /// Supplier link — nullable for backward compat with existing Printful products
+  supplierId        String?
+  supplier          Supplier?      @relation(fields: [supplierId], references: [id])
+  /// Quick discriminator: "printful" | "cj" | "manual"
+  supplierType      String         @default("printful")
+  /// Cost price from supplier (for margin calculation on dropship products)
+  costPrice         Float?
+
+  lastSyncedAt      DateTime?
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+
+  reviews           Review[]
+  variants          Variant[]
+  productImages     ProductImage[]
 }
 
 model Variant {
-  id         String  @id @default(cuid())
+  id                 String         @id @default(cuid())
+  productId          String
+  title              String
+  price              Float
+  stock              Int            @default(0)
+
+  /// Printful sync variant ID — the canonical external identifier
+  providerId         String         @unique
+  /// Printful catalog variant ID (the blank product variant from the catalog)
+  printfulVariantId  Int?
+
+  color              String?
+  size               String?
+  sku                String?
+  image              String?
+  images             String[]
+  /// Cost price from supplier (for margin calculation on dropship variants)
+  costPrice          Float?
+
+  isActive           Boolean        @default(true)
+  lastSyncedAt       DateTime?
+
+  product            Product        @relation(fields: [productId], references: [id], onDelete: Cascade)
+  variantImages      VariantImage[]
+  orderItems         OrderItem[]
+}
+
+/// Stores product-level mockup/preview images with type metadata
+model ProductImage {
+  id         String   @id @default(cuid())
   productId  String
-  title      String
-  price      Float
-  stock      Int     @default(0)
-  providerId String
-  color      String?
-  size       String?
-  image      String?
-  product    Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  url        String   @db.Text
+  /// Image type: "thumbnail", "preview", "front", "back", "lifestyle", etc.
+  type       String   @default("preview")
+  /// Display sort order
+  sortOrder  Int      @default(0)
+  createdAt  DateTime @default(now())
+
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([productId, url])
+}
+
+/// Stores variant-specific mockup/preview images with type metadata
+model VariantImage {
+  id         String   @id @default(cuid())
+  variantId  String
+  url        String   @db.Text
+  /// Image type from Printful file type: "preview", "front", "back", etc.
+  type       String   @default("preview")
+  /// Display sort order
+  sortOrder  Int      @default(0)
+  createdAt  DateTime @default(now())
+
+  variant    Variant  @relation(fields: [variantId], references: [id], onDelete: Cascade)
+
+  @@unique([variantId, url])
+}
+
+/// Audit trail for every sync run — tracks status, timing, errors
+model SyncLog {
+  id           String    @id @default(cuid())
+  /// "RUNNING" | "SUCCESS" | "FAILED" | "PARTIAL"
+  status       String
+  startedAt    DateTime  @default(now())
+  completedAt  DateTime?
+  productCount Int       @default(0)
+  variantCount Int       @default(0)
+  /// Number of products created (first seen)
+  createdCount Int       @default(0)
+  /// Number of products updated
+  updatedCount Int       @default(0)
+  /// Number of products deactivated (removed from Printful)
+  deletedCount Int       @default(0)
+  errorMessage String?   @db.Text
+  /// "MANUAL" | "WEBHOOK" | "CRON"
+  triggerType  String    @default("MANUAL")
+  /// Which supplier this sync was for (null = all / printful legacy)
+  supplierSlug String?
 }
 
 model Review {
@@ -117,27 +236,83 @@ model Review {
 }
 
 model Order {
-  id          String      @id @default(cuid())
-  userId      String
-  status      String      @default("PENDING")
-  totalAmount Float
-  currency    String      @default("EUR")
-  externalId  String?     @unique
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
-  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  items       OrderItem[]
+  id             String          @id @default(cuid())
+  userId         String
+  status         String          @default("PENDING")
+  totalAmount    Float
+  currency       String          @default("EUR")
+  externalId     String?         @unique
+  /// Stripe session ID used for idempotency — prevents duplicate fulfillment
+  idempotencyKey String?         @unique
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items          OrderItem[]
+  supplierOrders SupplierOrder[]
 }
 
 model OrderItem {
-  id        String  @id @default(cuid())
-  orderId   String
+  id           String   @id @default(cuid())
+  orderId      String
+  productId    String
+  title        String
+  quantity     Int
+  price        Float
+  variantId    String?
+  /// Snapshot supplier type at purchase time
+  supplierType String   @default("printful")
+  order        Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  variant      Variant? @relation(fields: [variantId], references: [id])
+}
+
+/// Tracks per-supplier fulfillment for an order (one per supplier per order)
+model SupplierOrder {
+  id              String   @id @default(cuid())
+  orderId         String
+  supplierId      String
+  /// External order ID from the supplier API
+  externalOrderId String?  @unique
+  status          String   @default("PENDING")
+  trackingNumber  String?
+  trackingUrl     String?
+  /// Raw API response stored for debugging
+  rawResponse     String?  @db.Text
+  errorMessage    String?  @db.Text
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  order    Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  supplier Supplier @relation(fields: [supplierId], references: [id])
+
+  @@unique([orderId, supplierId])
+}
+
+/// Tracks inventory and price changes for audit
+model InventoryLog {
+  id        String   @id @default(cuid())
   productId String
-  title     String
-  quantity  Int
-  price     Float
   variantId String?
-  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  /// "stock" | "price" | "costPrice" | "isActive"
+  field     String
+  oldValue  String?
+  newValue  String
+  /// "sync" | "webhook" | "manual" | "cron"
+  source    String
+  createdAt DateTime @default(now())
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  message   String   @db.Text
+  createdAt DateTime @default(now())
+}
+
+model Newsletter {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
 }
 
 enum Role {

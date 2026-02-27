@@ -15,7 +15,7 @@ export default function SyncButton() {
         try {
             const result = await syncPrintfulProducts();
             setStatus('success');
-            setMessage(`Successfully synced ${result.count} products from Printful.`);
+            setMessage(`Synced ${result.productCount} products (${result.variantCount} variants) — ${result.createdCount} new, ${result.updatedCount} updated, ${result.deletedCount} removed.`);
         } catch (error: any) {
             setStatus('error');
             setMessage(error.message || 'Failed to sync products.');

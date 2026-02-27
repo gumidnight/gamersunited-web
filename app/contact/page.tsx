@@ -9,29 +9,66 @@ import ReCAPTCHA from "react-google-recaptcha";
 export default function ContactPage() {
     const { contact } = siteContent;
     const recaptchaRef = useRef<ReCAPTCHA>(null);
-    const [loading, setLoading] = useState(false);
-    const [submitted, setSubmitted] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+    const [errors, setErrors] = useState<Record<string, string>>({});
 
-    const handleSubmit = useCallback(async (e: React.FormEvent) => {
+    const handleSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setErrors({}); // Clear previous errors
+        setSubmitStatus('idle'); // Reset submit status
 
-        setLoading(true);
+        const formData = new FormData(e.currentTarget);
+        const name = (formData.get("name") as string).trim();
+        const email = (formData.get("email") as string).trim();
+        const message = (formData.get("message") as string).trim();
+
+        const newErrors: Record<string, string> = {};
+
+        if (!name) {
+            newErrors.name = "Name is required.";
+        }
+        if (!email) {
+            newErrors.email = "Email is required.";
+        } else if (!/\S+@\S+\.\S+/.test(email)) {
+            newErrors.email = "Email is invalid.";
+        }
+        if (!message) {
+            newErrors.message = "Message is required.";
+        }
+
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            return;
+        }
+
+        setIsSubmitting(true);
 
         try {
             const token = await recaptchaRef.current?.executeAsync();
             recaptchaRef.current?.reset();
-            // In a real app, you'd send this token to your backend to verify
-            console.log("reCAPTCHA Token:", token);
 
-            // Mock submission
-            await new Promise(resolve => setTimeout(resolve, 1500));
-            setSubmitted(true);
-            alert("Message sent! We will get back to you soon.");
+            const res = await fetch("/api/contact", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name, email, message, token }),
+            });
+
+            if (res.ok) {
+                setSubmitStatus('success');
+                // Optionally clear form fields here
+                e.currentTarget.reset();
+            } else {
+                const data = await res.json();
+                setSubmitStatus('error');
+                setErrors({ form: data.error || "Failed to send message." });
+            }
         } catch (error) {
             console.error(error);
-            alert("Failed to send message. Please try again.");
+            setSubmitStatus('error');
+            setErrors({ form: "An unexpected error occurred. Please try again." });
         } finally {
-            setLoading(false);
+            setIsSubmitting(false);
         }
     }, []);
 
@@ -61,22 +98,18 @@ export default function ContactPage() {
                 >
                     <h2 className="text-2xl font-bold text-text-primary mb-6">Send a Message</h2>
                     <form className="space-y-5" onSubmit={handleSubmit}>
-                        <ReCAPTCHA
-                            ref={recaptchaRef}
-                            size="invisible"
-                            sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ""}
-                        />
                         <div>
                             <label htmlFor="name" className="block text-sm font-medium text-text-secondary mb-2">
                                 Name
                             </label>
                             <input
                                 type="text"
+                                name="name"
                                 id="name"
-                                required
-                                className="w-full bg-surface-base border border-surface-border rounded-lg px-4 py-3 text-text-primary focus:outline-none focus:border-neon-cyan transition-colors"
+                                className={`w-full bg-surface-base border ${errors.name ? 'border-neon-pink' : 'border-surface-border'} rounded-lg px-4 py-3 text-text-primary focus:outline-none focus:border-neon-cyan transition-colors`}
                                 placeholder="Your name"
                             />
+                            {errors.name && <p className="text-neon-pink text-xs mt-2 font-bold uppercase tracking-wider">{errors.name}</p>}
                         </div>
                         <div>
                             <label htmlFor="email" className="block text-sm font-medium text-text-secondary mb-2">
@@ -84,38 +117,53 @@ export default function ContactPage() {
                             </label>
                             <input
                                 type="email"
+                                name="email"
                                 id="email"
-                                required
-                                className="w-full bg-surface-base border border-surface-border rounded-lg px-4 py-3 text-text-primary focus:outline-none focus:border-neon-cyan transition-colors"
+                                className={`w-full bg-surface-base border ${errors.email ? 'border-neon-pink' : 'border-surface-border'} rounded-lg px-4 py-3 text-text-primary focus:outline-none focus:border-neon-cyan transition-colors`}
                                 placeholder="you@example.com"
                             />
+                            {errors.email && <p className="text-neon-pink text-xs mt-2 font-bold uppercase tracking-wider">{errors.email}</p>}
                         </div>
                         <div>
                             <label htmlFor="message" className="block text-sm font-medium text-text-secondary mb-2">
                                 Message
                             </label>
                             <textarea
+                                name="message"
                                 id="message"
                                 rows={5}
-                                required
-                                className="w-full bg-surface-base border border-surface-border rounded-lg px-4 py-3 text-text-primary focus:outline-none focus:border-neon-cyan transition-colors resize-none"
+                                className={`w-full bg-surface-base border ${errors.message ? 'border-neon-pink' : 'border-surface-border'} rounded-lg px-4 py-3 text-text-primary focus:outline-none focus:border-neon-cyan transition-colors resize-none`}
                                 placeholder="What's on your mind?"
                             />
+                            {errors.message && <p className="text-neon-pink text-xs mt-2 font-bold uppercase tracking-wider">{errors.message}</p>}
                         </div>
+
+                        {errors.form && (
+                            <p className="text-neon-pink text-sm text-center font-bold uppercase tracking-wider">{errors.form}</p>
+                        )}
 
                         <button
                             type="submit"
-                            disabled={loading || submitted}
+                            disabled={isSubmitting || submitStatus === 'success'}
                             className="w-full bg-gradient-brand text-white py-4 rounded-xl font-bold shadow-neon-purple hover-glow-purple transition-all disabled:opacity-50 disabled:cursor-not-allowed uppercase tracking-widest text-sm flex items-center justify-center gap-2"
                         >
-                            {loading ? (
-                                <><Loader2 size={18} className="animate-spin" /> Sending...</>
-                            ) : submitted ? (
+                            {isSubmitting ? (
+                                <div className="h-5 w-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                            ) : submitStatus === 'success' ? (
                                 "Message Sent!"
                             ) : (
                                 "Send Message"
                             )}
                         </button>
+                        <div className="flex justify-center pt-2">
+                            <ReCAPTCHA
+                                ref={recaptchaRef}
+                                size="invisible"
+                                badge="inline"
+                                sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ""}
+                                theme="dark"
+                            />
+                        </div>
                     </form>
                 </motion.div>
 

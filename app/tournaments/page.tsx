@@ -41,9 +41,9 @@ export default function TournamentsPage() {
                         Thanks for showing interest. We'll prioritize the games with the most votes for our next big tournament. Join our Discord to stay updated on the official announcement!
                     </p>
                     <a
-                        href="https://discord.gg/gamersunited"
+                        href="https://discord.com/invite/9RVBd6r"
                         target="_blank"
-                        rel="noreferrer"
+                        rel="noopener noreferrer"
                         className="inline-flex items-center gap-2 bg-[#5865F2] hover:bg-[#4752C4] text-white px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-sm transition-all shadow-neon-purple hover:scale-105"
                     >
                         Join our Discord
@@ -75,15 +75,15 @@ export default function TournamentsPage() {
             </div>
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+                <div className="flex flex-col lg:grid lg:grid-cols-2 gap-10 lg:gap-16 items-start">
                     {/* Left Side: Visual */}
                     <motion.div
                         initial={{ opacity: 0, x: -30 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.8, delay: 0.2 }}
-                        className="sticky top-32"
+                        className="w-full lg:sticky lg:top-32"
                     >
-                        <div className="relative aspect-[16/10] rounded-[2.5rem] overflow-hidden shadow-2xl border border-surface-border group">
+                        <div className="relative aspect-[16/10] rounded-[2rem] md:rounded-[2.5rem] overflow-hidden shadow-2xl border border-surface-border group">
                             <Image
                                 src="/tournaments.jpg"
                                 alt="Tournaments Background"
@@ -91,22 +91,22 @@ export default function TournamentsPage() {
                                 className="object-cover transition-transform duration-700 group-hover:scale-110 opacity-70"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-surface-base via-surface-base/20 to-transparent" />
-                            <div className="absolute bottom-10 left-10">
-                                <h3 className="text-3xl font-black text-white mb-2 uppercase italic tracking-tight">Real LAN Energy</h3>
-                                <p className="text-text-secondary font-bold uppercase tracking-widest text-sm">Gamers United Offline Events</p>
+                            <div className="absolute bottom-6 left-6 md:bottom-10 md:left-10">
+                                <h3 className="text-2xl md:text-3xl font-black text-white mb-2 uppercase italic tracking-tight">Real LAN Energy</h3>
+                                <p className="text-text-secondary font-bold uppercase tracking-widest text-[10px] md:text-sm">Gamers United Offline Events</p>
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-2 gap-6 mt-8">
-                            <div className="glass p-6 rounded-3xl border border-surface-border">
+                        <div className="grid grid-cols-2 gap-4 md:gap-6 mt-8">
+                            <div className="glass p-5 md:p-6 rounded-3xl border border-surface-border">
                                 <div className="text-neon-purple mb-4"><Star size={24} /></div>
-                                <h4 className="font-black text-text-primary uppercase text-sm mb-1">Epic Prizes</h4>
-                                <p className="text-text-muted text-xs">Cash pools and sponsor giveaways.</p>
+                                <h4 className="font-black text-text-primary uppercase text-xs md:text-sm mb-1">Epic Prizes</h4>
+                                <p className="text-text-muted text-[10px] md:text-xs">Cash pools and sponsor giveaways.</p>
                             </div>
-                            <div className="glass p-6 rounded-3xl border border-surface-border">
+                            <div className="glass p-5 md:p-6 rounded-3xl border border-surface-border">
                                 <div className="text-neon-cyan mb-4"><Users size={24} /></div>
-                                <h4 className="font-black text-text-primary uppercase text-sm mb-1">PRO Setup</h4>
-                                <p className="text-text-muted text-xs">High-end PCs and professional production.</p>
+                                <h4 className="font-black text-text-primary uppercase text-xs md:text-sm mb-1">PRO Setup</h4>
+                                <p className="text-text-muted text-[10px] md:text-xs">High-end PCs and professional production.</p>
                             </div>
                         </div>
                     </motion.div>
@@ -116,21 +116,22 @@ export default function TournamentsPage() {
                         initial={{ opacity: 0, x: 30 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.8, delay: 0.4 }}
+                        className="w-full"
                     >
-                        <div className="glass p-10 md:p-12 rounded-[3rem] border border-surface-border relative overflow-hidden">
-                            <h2 className="text-3xl font-black text-text-primary mb-8 uppercase tracking-tight italic">
+                        <div className="glass p-6 md:p-12 rounded-[2rem] md:rounded-[3rem] border border-surface-border relative overflow-hidden">
+                            <h2 className="text-2xl md:text-3xl font-black text-text-primary mb-8 uppercase tracking-tight italic">
                                 Vote for your game
                             </h2>
 
-                            <form onSubmit={handleSubmit} className="space-y-10">
-                                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                            <form onSubmit={handleSubmit} className="space-y-8 md:space-y-10">
+                                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 md:gap-4">
                                     {games.map((game) => (
                                         <button
                                             key={game.id}
                                             type="button"
                                             onClick={() => setSelectedGame(game.id)}
                                             className={`
-                                                relative flex flex-col items-center justify-center p-6 rounded-[2.5rem] border transition-all duration-300 group
+                                                relative flex flex-col items-center justify-center p-5 md:p-6 rounded-[2rem] md:rounded-[2.5rem] border transition-all duration-300 group
                                                 ${selectedGame === game.id
                                                     ? "bg-neon-cyan/10 border-neon-cyan shadow-[0_0_20px_rgba(34,211,238,0.2)] scale-105"
                                                     : "bg-surface-base/50 border-surface-border hover:border-surface-border-hover hover:bg-surface-base"

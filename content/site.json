@@ -2,7 +2,7 @@
   "meta": {
     "siteName": "Gamers United",
     "siteUrl": "https://gamersunited.cy",
-    "description": "The premier esports community and organizer in Cyprus. Join tournaments, read news, and connect with other gamers.",
+    "description": "The premier gaming community and organizer in Cyprus. Join tournaments, read news, and connect with other gamers.",
     "ogImage": "/og-image.jpg"
   },
   "hero": {
@@ -11,7 +11,7 @@
     "description": "The house of gaming in Cyprus. Join the fastest growing gaming community, catch the latest news, and grab exclusive merch.",
     "ctaPrimary": {
       "label": "Join the Gamers",
-      "href": "https://discord.gg/NmUJTbqJdZ"
+      "href": "https://discord.com/invite/9RVBd6r"
     },
     "ctaSecondary": {
       "label": "Read Latest News",
@@ -50,7 +50,7 @@
   ],
   "about": {
     "title": "About Us",
-    "description": "Gamers United is the island's premier esports community, bringing players together through tournaments, events, and a shared passion for competitive gaming.",
+    "description": "Gamers United is the island's premier gaming community, bringing players together through tournaments, events, and a shared passion for competitive gaming.",
     "mission": "We exist to cultivate a strong, inclusive gaming community in Cyprus. Whether you're a casual player or a competitive esports athlete, Gamers United provides the platform, the events, and the network to level up your experience. We organize tournaments across multiple titles, host community events, and provide a central hub for gaming culture on the island.",
     "stats": [
       {
@@ -98,7 +98,7 @@
     "discord": {
       "title": "Join Our Discord",
       "description": "Our Discord server is the heart of the community. Chat with fellow gamers, find teammates, get tournament updates, and hang out in voice channels.",
-      "href": "https://discord.gg/NmUJTbqJdZ",
+      "href": "https://discord.com/invite/9RVBd6r",
       "buttonLabel": "Join Discord Server"
     },
     "features": [
@@ -128,7 +128,7 @@
     "email": "contact@gamersunited.cy",
     "location": "Nicosia, Cyprus",
     "discordNote": "The fastest way to reach us is through our Discord server.",
-    "discordHref": "https://discord.gg/NmUJTbqJdZ",
+    "discordHref": "https://discord.com/invite/9RVBd6r",
     "partnerships": "Interested in partnering with Gamers United? We're always open to collaborations with brands, organizations, and event organizers. Reach out via email for business inquiries."
   },
   "news": {
@@ -140,7 +140,7 @@
     "description": "Official Gamers United merchandise. Rep your community with premium gaming apparel and accessories."
   },
   "footer": {
-    "tagline": "The premier esports and gaming community in Cyprus. Uniting players of all levels.",
+    "tagline": "The premier gaming community in Cyprus. Uniting players of all levels.",
     "copyright": "Gamers United. All rights reserved.",
     "sections": {
       "explore": [
@@ -172,7 +172,7 @@
         },
         {
           "label": "Discord Server",
-          "href": "https://discord.gg/NmUJTbqJdZ"
+          "href": "https://discord.com/invite/9RVBd6r"
         }
       ],
       "legal": [
@@ -188,7 +188,7 @@
     }
   },
   "social": {
-    "discord": "https://discord.gg/NmUJTbqJdZ",
+    "discord": "https://discord.com/invite/9RVBd6r",
     "facebook": "https://www.facebook.com/gamersunitedcy/",
     "instagram": "https://www.instagram.com/gamersunitedcy/",
     "twitter": "https://twitter.com/gamersunitedcy/",

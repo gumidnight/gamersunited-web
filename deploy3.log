@@ -1,0 +1,125 @@
+
+> tmp_next@0.1.0 deploy
+> opennextjs-cloudflare build && opennextjs-cloudflare deploy
+
+
+┌─────────────────────────────┐
+│ OpenNext — Cloudflare build │
+└─────────────────────────────┘
+
+App directory: /home/alexandros-g/code/gamersunited
+Next.js version : 16.1.6
+@opennextjs/cloudflare version: 1.16.5
+@opennextjs/aws version: 3.9.16
+
+┌─────────────────────────────────┐
+│ OpenNext — Building Next.js app │
+└─────────────────────────────────┘
+
+
+> tmp_next@0.1.0 build
+> next build
+
+▲ Next.js 16.1.6 (Turbopack)
+- Environments: .env
+
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+  Creating an optimized production build ...
+✓ Compiled successfully in 3.4s
+  Running TypeScript ...
+  Collecting page data using 23 workers ...
+  Generating static pages using 23 workers (0/12) ...
+  Generating static pages using 23 workers (3/12) 
+  Generating static pages using 23 workers (6/12) 
+  Generating static pages using 23 workers (9/12) 
+✓ Generating static pages using 23 workers (12/12) in 175.4ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /about
+├ ƒ /admin/news
+├ ƒ /admin/news/[id]
+├ ƒ /admin/news/new
+├ ƒ /admin/shop
+├ ƒ /admin/users
+├ ƒ /api/auth/[...nextauth]
+├ ƒ /api/webhooks/stripe
+├ ○ /community
+├ ○ /contact
+├ ○ /faq
+├ ƒ /news
+├ ƒ /news/[slug]
+├ ○ /privacy
+├ ƒ /settings
+├ ƒ /shop
+├ ƒ /shop/[id]
+├ ○ /shop/success
+├ ○ /terms
+└ ○ /tournaments
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+
+┌──────────────────────────────┐
+│ OpenNext — Generating bundle │
+└──────────────────────────────┘
+
+Bundling middleware function...
+Bundling static assets...
+Bundling cache assets...
+Building server function: default...
+Applying code patches: 1.364s
+# copyPackageTemplateFiles
+[35m⚙️ Bundling the OpenNext server...
+[0m
+[35mWorker saved in `.open-next/worker.js` 🚀
+[0m
+OpenNext build complete.
+
+┌──────────────────────────────┐
+│ OpenNext — Cloudflare deploy │
+└──────────────────────────────┘
+
+Incremental cache does not need populating
+Tag cache does not need populating
+
+ ⛅️ wrangler 4.67.0
+───────────────────
+🌀 Building list of assets...
+✨ Read 68 files from the assets directory /home/alexandros-g/code/gamersunited/.open-next/assets
+🌀 Starting asset upload...
+🌀 Found 5 new or modified static assets to upload. Proceeding with upload...
++ /BUILD_ID
++ /ig-1.jpg
++ /_next/static/chunks/4f64ab0a1edc01d6.js
++ /ig-2.jpg
++ /ig-3.jpg
+Uploaded 1 of 5 assets
+Uploaded 3 of 5 assets
+Uploaded 5 of 5 assets
+✨ Success! Uploaded 5 files (56 already uploaded) (1.64 sec)
+
+Total Upload: 11415.74 KiB / gzip: 2865.71 KiB
+Worker Startup Time: 26 ms
+Your Worker has access to the following bindings:
+Binding                                                                              Resource                  
+env.WORKER_SELF_REFERENCE (gamersunited-web)                                         Worker                    
+env.IMAGES                                                                           Images                    
+env.ASSETS                                                                           Assets                    
+env.NEXT_PUBLIC_SITE_URL ("https://gamersunited.cy")                                 Environment Variable      
+env.AUTH_URL ("https://gamersunited.cy")                                             Environment Variable      
+env.AUTH_TRUST_HOST ("true")                                                         Environment Variable      
+env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ("6LeuWHQsAAAAAID4wBWv27tvUP35q1-H4fFuW...")      Environment Variable      
+
+Uploaded gamersunited-web (22.09 sec)
+Deployed gamersunited-web triggers (7.00 sec)
+  https://gamersunited-web.alexandrosgeorgiou1999.workers.dev
+  gamersunited.cy (custom domain)
+  www.gamersunited.cy (custom domain)
+Current Version ID: 6bfb9461-679a-4da9-a95a-e7ddb70fee84

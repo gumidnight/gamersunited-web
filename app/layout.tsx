@@ -26,6 +26,8 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteContent.meta.siteUrl),
 };
 
+import { CartProvider } from '@/lib/CartContext';
+
 export default function RootLayout({
   children,
 }: {
@@ -33,13 +35,19 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${outfit.variable} ${inter.variable}`}>
+      <head>
+        <link rel="preconnect" href="https://images.unsplash.com" />
+        <link rel="dns-prefetch" href="https://images.unsplash.com" />
+      </head>
       <body className="antialiased min-h-screen flex flex-col">
         <AuthProvider>
-          <Navbar />
-          <main className="flex-1">
-            {children}
-          </main>
-          <Footer />
+          <CartProvider>
+            <Navbar />
+            <main className="flex-1">
+              {children}
+            </main>
+            <Footer />
+          </CartProvider>
         </AuthProvider>
       </body>
     </html>

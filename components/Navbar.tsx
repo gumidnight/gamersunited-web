@@ -8,6 +8,8 @@ import { Menu, X, LogIn, LogOut, Settings, Users } from "lucide-react";
 import siteContent from "@/content/site.json";
 import { getDiscordStatus } from "@/lib/discord-actions";
 
+import CartIcon from "./CartIcon";
+
 export default function Navbar() {
     const { data: session } = useSession();
     const [isOpen, setIsOpen] = useState(false);
@@ -64,11 +66,13 @@ export default function Navbar() {
                                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                             </span>
                             <span className="text-[10px] font-black tracking-widest text-text-secondary uppercase">
-                                {onlineCount > 0 ? `${onlineCount} ONLINE` : 'GUCY HUB'}
+                                {onlineCount > 0 ? `${onlineCount} ONLINE` : 'GU HUB'}
                             </span>
                         </div>
 
+                        <div className="h-8 w-[1px] bg-surface-border mx-2"></div>
 
+                        <CartIcon />
 
                         {session ? (
                             <div className="flex items-center gap-6 border-l border-surface-border pl-6">
@@ -114,7 +118,8 @@ export default function Navbar() {
                     </div>
 
                     {/* Mobile menu button */}
-                    <div className="md:hidden flex items-center gap-4">
+                    <div className="md:hidden flex items-center gap-6">
+                        <CartIcon />
                         <button
                             onClick={() => setIsOpen(!isOpen)}
                             className="text-text-secondary hover:text-text-primary transition-colors"
@@ -128,50 +133,51 @@ export default function Navbar() {
 
             {/* Mobile Nav */}
             {isOpen && (
-                <div className="md:hidden glass-strong border-b border-surface-border absolute w-full left-0 px-4 py-4">
-                    <div className="flex flex-col space-y-4">
+                <div className="md:hidden glass-strong absolute w-full h-[calc(100vh-6rem)] left-0 top-24 px-6 py-8 flex flex-col justify-between overflow-y-auto z-40 bg-background/95 backdrop-blur-xl border-t border-surface-border">
+                    <div className="flex flex-col space-y-8 flex-grow justify-center items-center pb-12">
                         {navLinks.map((link) => (
                             <Link
                                 key={link.href}
                                 href={link.href}
                                 onClick={() => setIsOpen(false)}
-                                className="text-lg font-medium text-text-secondary hover:text-text-primary transition-colors"
+                                className="text-2xl font-black text-text-secondary hover:text-neon-cyan hover:scale-105 transition-all outline-none uppercase tracking-[0.15em] text-center"
                             >
                                 {link.label}
                             </Link>
                         ))}
+                    </div>
 
-
+                    <div className="pb-8">
                         {session ? (
-                            <div className="pt-4 mt-2 border-t border-surface-border flex items-center justify-between">
-                                <div className="flex items-center gap-3">
+                            <div className="pt-8 border-t border-surface-border flex flex-col items-center gap-6">
+                                <div className="flex flex-col items-center gap-4">
                                     {session.user?.image && (
                                         <Image
                                             src={session.user.image}
                                             alt={`${session.user.name}'s profile picture`}
-                                            width={40}
-                                            height={40}
-                                            className="w-10 h-10 rounded-full border border-neon-cyan"
+                                            width={64}
+                                            height={64}
+                                            className="w-16 h-16 rounded-full border-2 border-neon-cyan shadow-[0_0_15px_rgba(34,211,238,0.3)]"
                                         />
                                     )}
-                                    <span className="text-base font-semibold">
+                                    <span className="text-xl font-bold tracking-wide">
                                         {session.user?.name}
                                     </span>
                                 </div>
-                                <div className="flex items-center gap-2">
+                                <div className="flex items-center gap-4 w-full justify-center">
                                     {(session.user as any) && (
                                         <Link
                                             href="/settings"
                                             onClick={() => setIsOpen(false)}
-                                            className="p-2 text-neon-cyan bg-neon-cyan/10 rounded"
+                                            className="p-4 text-neon-cyan bg-neon-cyan/10 rounded-xl transition-colors hover:bg-neon-cyan/20"
                                             title="Settings"
                                         >
-                                            <Settings size={20} />
+                                            <Settings size={24} />
                                         </Link>
                                     )}
                                     <button
                                         onClick={() => signOut()}
-                                        className="bg-surface-raised text-text-primary px-4 py-2 rounded hover:bg-neon-pink/20 hover:text-neon-pink transition-colors"
+                                        className="bg-surface-raised text-text-primary px-8 py-4 rounded-xl border border-surface-border hover:border-neon-pink hover:text-neon-pink transition-colors font-bold tracking-widest uppercase flex-1 max-w-[200px]"
                                     >
                                         Logout
                                     </button>
@@ -180,7 +186,7 @@ export default function Navbar() {
                         ) : (
                             <button
                                 onClick={() => signIn("discord")}
-                                className="mt-4 w-full text-center bg-gradient-brand text-white py-3 rounded-md font-bold shadow-neon-purple"
+                                className="w-full text-center bg-gradient-brand text-white py-5 rounded-xl font-black shadow-[0_0_20px_rgba(123,47,247,0.4)] tracking-wider uppercase text-lg hover:shadow-[0_0_30px_rgba(123,47,247,0.6)] transition-all"
                             >
                                 Login with Discord
                             </button>

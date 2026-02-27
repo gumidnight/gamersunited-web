@@ -1,0 +1,110 @@
+
+> tmp_next@0.1.0 dev
+> next dev
+
+⚠ Port 3000 is in use by an unknown process, using available port 3001 instead.
+▲ Next.js 16.1.6 (Turbopack)
+- Local:         http://localhost:3001
+- Network:       http://192.168.1.120:3001
+- Environments: .env
+
+✓ Starting...
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+✓ Ready in 896ms
+[API] GET /products error: Error [NeonDbError]: Error connecting to database: fetch failed
+    at ignore-listed frames {
+  severity: undefined,
+  code: undefined,
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: undefined,
+  line: undefined,
+  routine: undefined,
+  sourceError: TypeError: fetch failed
+      at ignore-listed frames {
+    [cause]: Error: self-signed certificate
+        at ignore-listed frames {
+      code: 'DEPTH_ZERO_SELF_SIGNED_CERT'
+    }
+  },
+  clientVersion: '7.4.1'
+}
+ GET /api/products 500 in 384ms (compile: 235ms, render: 149ms)
+[API] GET /products error: Error [NeonDbError]: Error connecting to database: fetch failed
+    at ignore-listed frames {
+  severity: undefined,
+  code: undefined,
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: undefined,
+  line: undefined,
+  routine: undefined,
+  sourceError: TypeError: fetch failed
+      at ignore-listed frames {
+    [cause]: Error: self-signed certificate
+        at ignore-listed frames {
+      code: 'DEPTH_ZERO_SELF_SIGNED_CERT'
+    }
+  },
+  clientVersion: '7.4.1'
+}
+ GET /api/products 500 in 57ms (compile: 5ms, render: 52ms)
+[API] GET /products error: Error [NeonDbError]: Error connecting to database: fetch failed
+    at ignore-listed frames {
+  severity: undefined,
+  code: undefined,
+  detail: undefined,
+  hint: undefined,
+  position: undefined,
+  internalPosition: undefined,
+  internalQuery: undefined,
+  where: undefined,
+  schema: undefined,
+  table: undefined,
+  column: undefined,
+  dataType: undefined,
+  constraint: undefined,
+  file: undefined,
+  line: undefined,
+  routine: undefined,
+  sourceError: TypeError: fetch failed
+      at ignore-listed frames {
+    [cause]: Error: self-signed certificate
+        at ignore-listed frames {
+      code: 'DEPTH_ZERO_SELF_SIGNED_CERT'
+    }
+  },
+  clientVersion: '7.4.1'
+}
+ GET /api/products 500 in 122ms (compile: 38ms, render: 83ms)
+  Reload env: .env
+[Cron] Error: TypeError: Cannot read properties of undefined (reading 'findMany')
+    at syncAllInventory (services/inventory/sync.ts:23:45)
+    at GET (app/api/cron/inventory-sync/route.ts:40:55)
+  21 |  */
+  22 | export async function syncAllInventory() {
+> 23 |     const suppliers = await prisma.supplier.findMany({
+     |                                             ^
+  24 |         where: { isActive: true },
+  25 |     });
+  26 |
+ GET /api/cron/inventory-sync?key=gu-cron-secret-change-in-production 500 in 195ms (compile: 130ms, render: 65ms)
+[?25h

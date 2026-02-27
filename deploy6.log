@@ -1,0 +1,128 @@
+
+> tmp_next@0.1.0 deploy
+> opennextjs-cloudflare build && opennextjs-cloudflare deploy
+
+
+┌─────────────────────────────┐
+│ OpenNext — Cloudflare build │
+└─────────────────────────────┘
+
+App directory: /home/alexandros-g/code/gamersunited
+Next.js version : 16.1.6
+@opennextjs/cloudflare version: 1.16.5
+@opennextjs/aws version: 3.9.16
+
+┌─────────────────────────────────┐
+│ OpenNext — Building Next.js app │
+└─────────────────────────────────┘
+
+
+> tmp_next@0.1.0 build
+> next build
+
+▲ Next.js 16.1.6 (Turbopack)
+- Environments: .env
+
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+  Creating an optimized production build ...
+✓ Compiled successfully in 3.5s
+  Running TypeScript ...
+  Collecting page data using 23 workers ...
+  Generating static pages using 23 workers (0/15) ...
+  Generating static pages using 23 workers (3/15) 
+  Generating static pages using 23 workers (7/15) 
+  Generating static pages using 23 workers (11/15) 
+✓ Generating static pages using 23 workers (15/15) in 177.9ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /about
+├ ƒ /admin/news
+├ ƒ /admin/news/[id]
+├ ƒ /admin/news/new
+├ ƒ /admin/shop
+├ ƒ /admin/users
+├ ƒ /api/auth/[...nextauth]
+├ ƒ /api/products
+├ ƒ /api/products/[id]
+├ ƒ /api/sync
+├ ƒ /api/webhooks/printful
+├ ƒ /api/webhooks/stripe
+├ ○ /community
+├ ○ /contact
+├ ○ /faq
+├ ƒ /news
+├ ƒ /news/[slug]
+├ ○ /privacy
+├ ƒ /settings
+├ ƒ /shop
+├ ƒ /shop/[id]
+├ ○ /shop/success
+├ ○ /terms
+└ ○ /tournaments
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+
+┌──────────────────────────────┐
+│ OpenNext — Generating bundle │
+└──────────────────────────────┘
+
+Bundling middleware function...
+Bundling static assets...
+Bundling cache assets...
+Building server function: default...
+Applying code patches: 1.384s
+# copyPackageTemplateFiles
+[35m⚙️ Bundling the OpenNext server...
+[0m
+[35mWorker saved in `.open-next/worker.js` 🚀
+[0m
+OpenNext build complete.
+
+┌──────────────────────────────┐
+│ OpenNext — Cloudflare deploy │
+└──────────────────────────────┘
+
+Incremental cache does not need populating
+Tag cache does not need populating
+
+ ⛅️ wrangler 4.67.0 (update available 4.68.0)
+─────────────────────────────────────────────
+🌀 Building list of assets...
+✨ Read 68 files from the assets directory /home/alexandros-g/code/gamersunited/.open-next/assets
+🌀 Starting asset upload...
+🌀 Found 4 new or modified static assets to upload. Proceeding with upload...
++ /BUILD_ID
++ /_next/static/chunks/a8cfeebbbccc859f.css
++ /_next/static/chunks/d90ff44cf339aee2.js
++ /_next/static/chunks/e073d8e56f605d24.js
+Uploaded 1 of 4 assets
+Uploaded 2 of 4 assets
+Uploaded 4 of 4 assets
+✨ Success! Uploaded 4 files (57 already uploaded) (0.94 sec)
+
+Total Upload: 11761.16 KiB / gzip: 2938.17 KiB
+Worker Startup Time: 36 ms
+Your Worker has access to the following bindings:
+Binding                                                                              Resource                  
+env.WORKER_SELF_REFERENCE (gamersunited-web)                                         Worker                    
+env.IMAGES                                                                           Images                    
+env.ASSETS                                                                           Assets                    
+env.NEXT_PUBLIC_SITE_URL ("https://gamersunited.cy")                                 Environment Variable      
+env.AUTH_URL ("https://gamersunited.cy")                                             Environment Variable      
+env.AUTH_TRUST_HOST ("true")                                                         Environment Variable      
+env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ("6LeuWHQsAAAAAID4wBWv27tvUP35q1-H4fFuW...")      Environment Variable      
+
+Uploaded gamersunited-web (21.10 sec)
+Deployed gamersunited-web triggers (8.22 sec)
+  https://gamersunited-web.alexandrosgeorgiou1999.workers.dev
+  gamersunited.cy (custom domain)
+  www.gamersunited.cy (custom domain)
+Current Version ID: 7007d81a-9072-438f-bf6d-7109fc804e75

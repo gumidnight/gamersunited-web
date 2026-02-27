@@ -1,0 +1,479 @@
+openapi: 3.0.3
+info:
+  title: Gamers United — E-Shop API
+  description: |
+    API for the Gamers United e-commerce shop, powered by Printful integration.
+    
+    ## Authentication
+    - Public endpoints (GET) do not require authentication.
+    - Admin endpoints (POST /sync) require an active session with ADMIN role.
+    - Webhook endpoints are called by Printful and do not require user auth.
+    
+    ## Rate Limits
+    - The underlying Printful API has a 120 req/min limit.
+    - Our sync endpoint enforces admin-only access.
+    - Product listing endpoints are served from our database and are not rate-limited by Printful.
+  version: 1.0.0
+  contact:
+    name: Gamers United Cyprus
+    url: https://gamersunited.cy
+
+servers:
+  - url: https://gamersunited.cy/api
+    description: Production
+  - url: http://localhost:3000/api
+    description: Local Development
+
+tags:
+  - name: Products
+    description: Product catalog endpoints
+  - name: Sync
+    description: Printful synchronization endpoints
+  - name: Webhooks
+    description: Printful webhook handlers
+
+paths:
+  /products:
+    get:
+      tags: [Products]
+      summary: List all products
+      description: |
+        Returns a paginated list of all active products with their variants,
+        images, and review statistics.
+      parameters:
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+            minimum: 0
+          description: Number of products to skip
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 50
+            minimum: 1
+            maximum: 100
+          description: Maximum number of products to return
+        - name: search
+          in: query
+          schema:
+            type: string
+          description: Search products by title (case-insensitive)
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/ProductListItem"
+                  paging:
+                    $ref: "#/components/schemas/Paging"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /products/{id}:
+    get:
+      tags: [Products]
+      summary: Get product detail
+      description: |
+        Returns full product detail including all variants with their images,
+        customer reviews, and available filter options (colors, sizes).
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Product ID (internal database ID)
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/ProductDetail"
+        "404":
+          description: Product not found or inactive
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /sync:
+    post:
+      tags: [Sync]
+      summary: Trigger manual sync
+      description: |
+        Triggers a full synchronization of all products from Printful.
+        Requires ADMIN role. Creates a SyncLog entry for audit trail.
+      security:
+        - sessionAuth: []
+      responses:
+        "200":
+          description: Sync completed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Sync completed successfully"
+                  data:
+                    $ref: "#/components/schemas/SyncResult"
+        "403":
+          description: Unauthorized — admin access required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          $ref: "#/components/responses/InternalError"
+    get:
+      tags: [Sync]
+      summary: Get sync status
+      description: Returns the latest sync status, history, and whether a sync is currently running.
+      security:
+        - sessionAuth: []
+      responses:
+        "200":
+          description: Sync status
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  isRunning:
+                    type: boolean
+                  lastSync:
+                    $ref: "#/components/schemas/SyncResult"
+                  history:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/SyncLog"
+        "403":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /webhooks/printful:
+    post:
+      tags: [Webhooks]
+      summary: Printful webhook handler
+      description: |
+        Receives webhook events from Printful. Processes:
+        - `product_synced`: re-fetches and upserts the product
+        - `product_updated`: re-fetches and upserts the product
+        - `product_deleted`: marks product as inactive
+        - `stock_updated`: updates variant availability
+        
+        Always returns 200 to prevent Printful from retrying.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PrintfulWebhookEvent"
+      responses:
+        "200":
+          description: Event acknowledged
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  received:
+                    type: boolean
+                    example: true
+
+components:
+  securitySchemes:
+    sessionAuth:
+      type: apiKey
+      in: cookie
+      name: next-auth.session-token
+      description: NextAuth session cookie (requires ADMIN role)
+
+  responses:
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Something went wrong"
+
+    Paging:
+      type: object
+      properties:
+        total:
+          type: integer
+          example: 42
+        offset:
+          type: integer
+          example: 0
+        limit:
+          type: integer
+          example: 50
+        hasMore:
+          type: boolean
+          example: false
+
+    ProductListItem:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "clx1abc2d0000"
+        title:
+          type: string
+          example: "Gamers United Hoodie"
+        description:
+          type: string
+          example: "Premium gaming hoodie for the community"
+        price:
+          type: number
+          format: float
+          example: 39.99
+        image:
+          type: string
+          nullable: true
+          example: "https://files.cdn.printful.com/thumbnail.png"
+        images:
+          type: array
+          items:
+            type: string
+        providerId:
+          type: string
+          example: "123456789"
+        isActive:
+          type: boolean
+        averageRating:
+          type: number
+          nullable: true
+          example: 4.5
+        reviewCount:
+          type: integer
+          example: 12
+        variants:
+          type: array
+          items:
+            $ref: "#/components/schemas/Variant"
+        productImages:
+          type: array
+          items:
+            $ref: "#/components/schemas/Image"
+
+    ProductDetail:
+      allOf:
+        - $ref: "#/components/schemas/ProductListItem"
+        - type: object
+          properties:
+            availableColors:
+              type: array
+              items:
+                type: string
+              example: ["Black", "White", "Navy"]
+            availableSizes:
+              type: array
+              items:
+                type: string
+              example: ["S", "M", "L", "XL", "2XL"]
+            reviews:
+              type: array
+              items:
+                $ref: "#/components/schemas/Review"
+
+    Variant:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+          example: "Gamers United Hoodie - Black / XL"
+        price:
+          type: number
+          format: float
+          example: 39.99
+        stock:
+          type: integer
+          example: 999
+        providerId:
+          type: string
+        color:
+          type: string
+          nullable: true
+          example: "Black"
+        size:
+          type: string
+          nullable: true
+          example: "XL"
+        sku:
+          type: string
+          nullable: true
+        image:
+          type: string
+          nullable: true
+        images:
+          type: array
+          items:
+            type: string
+        isActive:
+          type: boolean
+        variantImages:
+          type: array
+          items:
+            $ref: "#/components/schemas/Image"
+
+    Image:
+      type: object
+      properties:
+        id:
+          type: string
+        url:
+          type: string
+          example: "https://files.cdn.printful.com/preview.png"
+        type:
+          type: string
+          example: "preview"
+          enum: [thumbnail, preview, front, back, lifestyle, default]
+        sortOrder:
+          type: integer
+          example: 0
+
+    Review:
+      type: object
+      properties:
+        id:
+          type: string
+        rating:
+          type: integer
+          minimum: 1
+          maximum: 5
+          example: 5
+        content:
+          type: string
+          example: "Great quality hoodie!"
+        createdAt:
+          type: string
+          format: date-time
+        user:
+          type: object
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+              example: "GamerPro"
+            image:
+              type: string
+              nullable: true
+
+    SyncResult:
+      type: object
+      properties:
+        success:
+          type: boolean
+        productCount:
+          type: integer
+          example: 15
+        variantCount:
+          type: integer
+          example: 45
+        createdCount:
+          type: integer
+          example: 3
+        updatedCount:
+          type: integer
+          example: 12
+        deletedCount:
+          type: integer
+          example: 0
+
+    SyncLog:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+          enum: [RUNNING, SUCCESS, FAILED, PARTIAL]
+        startedAt:
+          type: string
+          format: date-time
+        completedAt:
+          type: string
+          format: date-time
+          nullable: true
+        productCount:
+          type: integer
+        variantCount:
+          type: integer
+        createdCount:
+          type: integer
+        updatedCount:
+          type: integer
+        deletedCount:
+          type: integer
+        errorMessage:
+          type: string
+          nullable: true
+        triggerType:
+          type: string
+          enum: [MANUAL, WEBHOOK, CRON]
+
+    PrintfulWebhookEvent:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [product_synced, product_updated, product_deleted, stock_updated]
+          example: "product_updated"
+        created:
+          type: integer
+          description: Unix timestamp
+          example: 1677234567
+        retries:
+          type: integer
+          example: 0
+        store:
+          type: integer
+          example: 1234567
+        data:
+          type: object
+          properties:
+            sync_product:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  example: 123456789
+                external_id:
+                  type: string
+                name:
+                  type: string

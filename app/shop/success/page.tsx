@@ -1,7 +1,17 @@
+"use client";
+
+import React, { useEffect } from 'react';
 import Link from "next/link";
 import { CheckCircle2, ShoppingBag, ArrowRight } from "lucide-react";
+import { useCart } from "@/lib/CartContext";
 
 export default function SuccessPage() {
+    const { clearCart } = useCart();
+
+    useEffect(() => {
+        clearCart();
+    }, [clearCart]);
+
     return (
         <div className="max-w-3xl mx-auto px-4 py-32 text-center pt-48">
             <div className="mb-8 flex justify-center">
