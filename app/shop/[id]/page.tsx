@@ -74,6 +74,31 @@ export default async function ProductPage({ params }: { params: { id: string } }
         notFound();
     }
 
+    const pickImageUrl = (value: string | null) => {
+        if (!value) return null;
+        const trimmed = value.trim();
+        if (trimmed.startsWith("[") && trimmed.endsWith("]")) {
+            try {
+                const parsed = JSON.parse(trimmed);
+                if (Array.isArray(parsed) && typeof parsed[0] === "string") {
+                    return parsed[0];
+                }
+            } catch {
+                // keep raw value fallback
+            }
+        }
+        return value;
+    };
+
+    const normalizeImages = (values: string[]) => {
+        const out: string[] = [];
+        for (const value of values) {
+            const normalized = pickImageUrl(value);
+            if (normalized) out.push(normalized);
+        }
+        return Array.from(new Set(out));
+    };
+
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 pt-32">
             <Link
@@ -88,9 +113,9 @@ export default async function ProductPage({ params }: { params: { id: string } }
                     id: product.id,
                     title: product.title,
                     description: product.description,
-                    image: product.image,
+                    image: pickImageUrl(product.image),
                     price: product.price,
-                    customImages: product.customImages
+                    customImages: normalizeImages(product.customImages)
                 }}
                 variants={product.variants.map(v => ({
                     id: v.id,
@@ -99,8 +124,8 @@ export default async function ProductPage({ params }: { params: { id: string } }
                     stock: v.stock,
                     color: v.color,
                     size: v.size,
-                    image: v.image,
-                    images: v.images
+                    image: pickImageUrl(v.image),
+                    images: normalizeImages(v.images)
                 }))}
             />
 
@@ -113,4 +138,3 @@ export default async function ProductPage({ params }: { params: { id: string } }
         </div>
     );
 }
-

@@ -32,6 +32,22 @@ export default async function ShopPage({
         }
     });
 
+    const pickImageUrl = (value: string | null) => {
+        if (!value) return null;
+        const trimmed = value.trim();
+        if (trimmed.startsWith("[") && trimmed.endsWith("]")) {
+            try {
+                const parsed = JSON.parse(trimmed);
+                if (Array.isArray(parsed) && typeof parsed[0] === "string") {
+                    return parsed[0];
+                }
+            } catch {
+                // keep raw value fallback
+            }
+        }
+        return value;
+    };
+
     // Fetch top rated reviews (e.g., 4 and 5 stars)
     const bestReviews = await prisma.review.findMany({
         where: { rating: { gte: 4 } },
@@ -80,9 +96,9 @@ export default async function ShopPage({
                                 className="glass rounded-[2rem] overflow-hidden border border-surface-border/50 hover:border-neon-purple/50 transition-all duration-500 hover:-translate-y-2 group relative shadow-2xl flex flex-col"
                             >
                                 <div className="h-80 bg-surface-raised flex items-center justify-center relative overflow-hidden">
-                                    {product.image ? (
+                                    {pickImageUrl(product.image) ? (
                                         <Image
-                                            src={product.image}
+                                            src={pickImageUrl(product.image)!}
                                             alt={product.title}
                                             fill
                                             className="object-cover group-hover:scale-110 transition-transform duration-1000"
